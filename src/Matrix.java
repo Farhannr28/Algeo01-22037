@@ -210,14 +210,14 @@ public class Matrix{
             dividedRow(i, nZero);   // membagi elemen dalam satu baris dengan angka bukan 0 terdepan agar menjadi leading one
             idx_col = getColIdx(i, 1);
             
-            // cek di bawah leading one tsb apakah 0 atau bukan
+            // cek di bawah leading one tsb apakah ada yang != 0
             j = i + 1;
             while (j < getRow())
             {
-                // kondisi di bawah leading one tsb != 0
+                // kondisi di bawah leading one tsb ada yang!= 0
                 if (getElmt(j, idx_col) != 0) 
                 {   
-                    // melakukan operasi baris elementer agar di bawah leading one tsb = 0
+                    // melakukan operasi baris elementer agar semua ELMT di bawah leading one tsb = 0
                     underlead = getElmt(j, idx_col);
                     for (k = 0; k < getCol(); k++)
                     {
@@ -225,6 +225,35 @@ public class Matrix{
                     }
                 }
                 j++;
+            }
+        }
+    }
+
+    public void getEselonBaris_Tereduksi()
+    // Mendapatkan matrix eselon baris tereduksi
+    {
+        getEselonBaris();   // dapatkan eselon baris
+
+        int i, j, k, idx_col;
+        double above;
+        for (i = getRow() - 1; i > 0; i--)
+        {
+            idx_col = getColIdx(i, 1);
+            if (idx_col != -1)
+            {
+                // cek di atas leading one tsb apakah ada yang != 0
+                for (j = 0; j < i; j++)
+                {
+                    above = getElmt(j, idx_col);
+                    if (above != 0) // kondisi di atas leading one tsb ada yang != 0
+                    {
+                        // melakukan operasi baris elementer agar semua ELMT di atas leading one tsb = 0
+                        for (k = getCol() - 1; k >= idx_col; k--)  
+                        {
+                            this.Mat[j][k] = getElmt(j, k) - (above * getElmt(i, k));
+                        }  
+                    }
+                }
             }
         }
     }
