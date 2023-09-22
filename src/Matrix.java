@@ -48,6 +48,18 @@ public class Matrix{
         return (-1);
     }
 
+    public int getlastRowIdx()
+    // Mengirim nilai index baris terakhir matrix
+    {
+        return this.getRow() - 1;
+    }
+    
+    public int getlastColIdx()
+    // Mengirim nilai index kolom terakhir matrix
+    {
+        return this.getCol() - 1;
+    }
+
     // INPUT & OUTPUT //
     public void readMatrix(){
         for (int i = 0; i < getRow(); i++){
@@ -174,6 +186,22 @@ public class Matrix{
             this.Mat[row][i] = this.Mat[row][i] - x;
         }         
     }*/
+
+    public void negatedZero()
+    // Mengatasi nilai negatif 0 yang terdapat pada matrix eselon
+    {
+        int i, j;
+        for (i = 0; i < getRow(); i++)
+        {
+            for (j = 0; j <getCol(); j++)
+            {
+                if (getElmt(i, j) == -0.0) 
+                {
+                    this.Mat[i][j] = 0;
+                }
+            }
+        }
+    }
     
     public void sortRowZero()
     // Mengurutkan baris berdasarkan jumlah angka 0 di depan, terurut membesar
@@ -212,21 +240,23 @@ public class Matrix{
             
             // cek di bawah leading one tsb apakah ada yang != 0
             j = i + 1;
-            while (j < getRow())
+            while (j < getRow() && idx_col != (-1))
             {
                 // kondisi di bawah leading one tsb ada yang!= 0
                 if (getElmt(j, idx_col) != 0) 
                 {   
                     // melakukan operasi baris elementer agar semua ELMT di bawah leading one tsb = 0
                     underlead = getElmt(j, idx_col);
-                    for (k = 0; k < getCol(); k++)
+                    for (k = idx_col; k < getCol(); k++)
                     {
                         this.Mat[j][k] = getElmt(j, k) - (underlead * getElmt(i, k));
                     }
                 }
                 j++;
             }
+            sortRowZero(); // mengurutkan baris berdasarkan jumlah angka 0 di depan
         }
+        negatedZero();  // mengatasi negatif 0 pada matrix eselon
     }
 
     public void getEselonBaris_Tereduksi()
@@ -236,7 +266,7 @@ public class Matrix{
 
         int i, j, k, idx_col;
         double above;
-        for (i = getRow() - 1; i > 0; i--)
+        for (i = getlastRowIdx(); i > 0; i--)
         {
             idx_col = getColIdx(i, 1);
             if (idx_col != -1)
@@ -256,5 +286,6 @@ public class Matrix{
                 }
             }
         }
+        negatedZero(); // mengatasi negatif 0 pada matrix eselon
     }
 }
