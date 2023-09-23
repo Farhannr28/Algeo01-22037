@@ -42,6 +42,16 @@ public class Matrix{
         }
     }
 
+    public void printMatrix(){
+        for (int i = 0; i < getRow(); i++){
+            for (int j = 0; j < getCol(); j++){
+                System.out.print(getElmt(i, j));
+                System.out.print(" ");
+            }
+            System.out.println();
+        }
+    }
+
     // OPERATIONS //
     public void addWith(Matrix M2){
         for (int i = 0; i < getRow(); i++){
