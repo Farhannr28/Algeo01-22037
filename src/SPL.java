@@ -17,7 +17,7 @@ public class SPL {
         return res;
     }
 
-    public boolean isSol_Exist(Matrix m)
+    public boolean isSolExist(Matrix m)
     // Mengirim true jika SPL memiliki solusi
     {
         int i;
@@ -34,7 +34,7 @@ public class SPL {
         return Sol_exist;
     }
 
-    public boolean isParametrik_Solution(Matrix m, int col)
+    public boolean isParametrikSolution(Matrix m, int col)
     // Mengirim true jika pada suatu kolom matriks tidak ada yang jadi leading one baris
     {
         boolean found_leadOne = false;
@@ -62,12 +62,12 @@ public class SPL {
         return (found_leadOne || countO == m.getRow());
     }
 
-    public void Eliminasi_Gauss(Matrix m)
+    public void gaussElimination(Matrix m)
     // Mendapatkan solusi SPL dengan metode Eliminasi Gauss
     {
         m.getEselonBaris(); // mendapatkan matrix eselon baris
 
-        if (isSol_Exist(m)) // SPL memiliki solusi
+        if (isSolExist(m)) // SPL memiliki solusi
         {
             char[] Parametrik = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'}; // karakter untuk solusi tidak tunggal
             String[] Solution;
@@ -143,7 +143,7 @@ public class SPL {
                     int k;
                     for (k = idx_col+1; k < m.getlastColIdx(); k++) 
                     {
-                        if (isParametrik_Solution(m, k))
+                        if (isParametrikSolution(m, k))
                         {
                             Solution[k] = "X" + (k+1) + " = " + Parametrik[k-1] + ", dengan " + Parametrik[k-1] + " bilangan Real.";
                             if (Row_Temp[k] != 0)
@@ -177,7 +177,7 @@ public class SPL {
             }
         }
         // TIdak ada solusi
-        else // isSol_Exist(m) == false
+        else // isSolExist(m) == false
         {
             System.out.println("Sistem persamaan linear tidak memiliki solusi");
         }

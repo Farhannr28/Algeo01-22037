@@ -166,27 +166,6 @@ public class Matrix{
         }
     }
 
-    /* BELUM KEPAKE TERNYATA GA JADI MAKE
-    public void multiplyRow(int row, double x)
-    // Mengalikan setiap elemen pada baris dengan suatu konstanta
-    {
-        int i;
-        for (i = 0; i < getCol(); i++) 
-        {
-            this.Mat[row][i] = this.Mat[row][i] * x;
-        }        
-    }
-    
-    public void minusRow(int row, double x)
-    // Mengurangi setiap elemen pada baris dengan suatu konstanta 
-    {
-        int i;
-        for (i = 0; i < getCol(); i++) 
-        {
-            this.Mat[row][i] = this.Mat[row][i] - x;
-        }         
-    }*/
-
     public void negatedZero()
     // Mengatasi nilai negatif 0 yang terdapat pada matrix eselon
     {
@@ -259,7 +238,7 @@ public class Matrix{
         negatedZero();  // mengatasi negatif 0 pada matrix eselon
     }
 
-    public void getEselonBaris_Tereduksi()
+    public void getEselonBarisTereduksi()
     // Mendapatkan matrix eselon baris tereduksi
     {
         getEselonBaris();   // dapatkan eselon baris
