@@ -317,5 +317,36 @@ public class Matrix{
         }
         return res;
     }
-    
+
+    public int findIdxNotZero(int r){
+        for (int i = 0; i < this.col; i++){
+            if (this.Mat[r][i] != 0) return i;
+        }
+        return -1;
+    }
+
+    public static double determinantWithOBE(Matrix m1){
+        double res = 1;
+        m1.sortRowZero();
+        System.out.println();
+        for (int i = 0; i < m1.row; i++){
+            int firstNonZeroIdx = m1.findIdxNotZero(i);
+            for (int j = i + 1; j < m1.row; j++){
+                if (m1.Mat[j][firstNonZeroIdx] != 0){
+                    double mult = m1.Mat[j][firstNonZeroIdx];
+                    for (int k = firstNonZeroIdx; k < m1.col; k++){
+                        m1.Mat[j][k] = m1.Mat[j][k] - (m1.Mat[i][k] / m1.Mat[i][firstNonZeroIdx]) * mult;
+                    }
+                } 
+            }
+            m1.displayMatrix();
+            System.out.println();
+            m1.sortRowZero();
+        }
+        m1.negatedZero();
+        for (int i = 0; i < m1.row; i++){
+            res *= m1.Mat[i][i];
+        }
+        return res;
+    }
 }
