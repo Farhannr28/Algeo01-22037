@@ -288,4 +288,34 @@ public class Matrix{
         }
         negatedZero(); // mengatasi negatif 0 pada matrix eselon
     }
+
+    public static Matrix minor(Matrix m, int r, int c){
+        Matrix minorM = new Matrix(m.row - 1, m.col - 1);
+        int rm = 0, cm = 0;
+        for (int i = 0; i < m.row; i++){
+            if (i != r){
+                cm = 0;
+                for (int j = 0; j < m.col; j++){
+                    if (j != c){
+                        minorM.Mat[rm][cm] = m.Mat[i][j];
+                        cm++;
+                    }
+                }
+                rm++;
+            }
+        }
+        return minorM;
+    }
+
+    public static double determinantWithCofactor(Matrix m1){
+        if (m1.row == 1){
+            return m1.Mat[0][0];
+        }
+        double res = 0;
+        for (int i = 0; i < m1.row; i++){
+            res += (i % 2 == 1)? (-1.0) * m1.Mat[0][i] *determinantWithCofactor(minor(m1, 0, i)) : m1.Mat[0][i] * determinantWithCofactor(minor(m1, 0, i));
+        }
+        return res;
+    }
+    
 }
