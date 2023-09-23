@@ -289,6 +289,16 @@ public class Matrix{
         negatedZero(); // mengatasi negatif 0 pada matrix eselon
     }
 
+    public static Matrix getCoefficient(Matrix m){
+        Matrix res = new Matrix(m.row, m.col - 1);
+        for (int i = 0; i < res.row; i++){
+            for (int j = 0; j < res.col; j++){
+                res.Mat[i][j] = m.Mat[i][j];
+            }
+        }
+        return res;
+    }
+
     public static Matrix minor(Matrix m, int r, int c){
         Matrix minorM = new Matrix(m.row - 1, m.col - 1);
         int rm = 0, cm = 0;
