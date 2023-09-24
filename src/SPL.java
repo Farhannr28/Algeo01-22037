@@ -17,7 +17,7 @@ public class SPL {
         return res;
     }
 
-    public boolean isSol_Exist(Matrix m)
+    public static boolean isSolExist(Matrix m)
     // Mengirim true jika SPL memiliki solusi
     {
         int i;
@@ -32,9 +32,8 @@ public class SPL {
         return Sol_exist;
     }
 
-    public boolean isParametrik_Solution(Matrix m, int col)
-    // Mengirim true jika pada suatu kolom matriks tidak ada yang jadi leading one
-    // baris
+    public static boolean isParametrikSolution(Matrix m, int col)
+    // Mengirim true jika pada suatu kolom matriks tidak ada yang jadi leading one baris
     {
         boolean found_leadOne = false;
         int j = 0, countO = 0;
@@ -55,12 +54,12 @@ public class SPL {
         return (found_leadOne || countO == m.getRow());
     }
 
-    public void Eliminasi_Gauss(Matrix m)
+    public static void gaussElimination(Matrix m)
     // Mendapatkan solusi SPL dengan metode Eliminasi Gauss
     {
         m.getEselonBaris(); // mendapatkan matrix eselon baris
 
-        if (isSol_Exist(m)) // SPL memiliki solusi
+        if (isSolExist(m)) // SPL memiliki solusi
         {
             char[] Parametrik = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q',
                     'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' }; // karakter untuk solusi tidak tunggal
@@ -120,15 +119,20 @@ public class SPL {
                         Solution[idx_col] = "X" + (idx_col + 1) + " = " + Row_Temp[idx_col];
                     }
                     int k;
-                    for (k = idx_col + 1; k < m.getlastColIdx(); k++) {
-                        if (isParametrik_Solution(m, k)) {
-                            Solution[k] = "X" + (k + 1) + " = " + Parametrik[k - 1] + ", dengan " + Parametrik[k - 1]
-                                    + " bilangan Real.";
-                            if (Row_Temp[k] != 0) {
-                                if (Row_Temp[k] < 0) {
-                                    Solution[idx_col] += " + " + (-1) * Row_Temp[k] + " " + Parametrik[k - 1];
-                                } else {
-                                    Solution[idx_col] += " - " + Row_Temp[k] + " " + Parametrik[k - 1];
+                    for (k = idx_col+1; k < m.getlastColIdx(); k++) 
+                    {
+                        if (isParametrikSolution(m, k))
+                        {
+                            Solution[k] = "X" + (k+1) + " = " + Parametrik[k-1] + ", dengan " + Parametrik[k-1] + " bilangan Real.";
+                            if (Row_Temp[k] != 0)
+                            {
+                                if (Row_Temp[k] < 0)
+                                {
+                                    Solution[idx_col] += " + " + (-1)*Row_Temp[k] + " " + Parametrik[k-1];
+                                }
+                                else
+                                {
+                                    Solution[idx_col] += " - " + Row_Temp[k] + " " + Parametrik[k-1];
                                 }
                             }
                         } else {
@@ -138,18 +142,97 @@ public class SPL {
                 }
             }
             // OUTPUT
-            for (i = 0; i < m.getlastColIdx(); i++) {
-                // handling kasus solusi tidak tunggal dalam parametrik yang belum terassign
-                // karena index di luar looping
-                if (Solution[i] == null) {
-                    Solution[i] = Solution[i] = "X" + (i + 1) + " = " + Parametrik[i] + ", dengan " + Parametrik[i]
-                            + " bilangan Real.";
+            for (i = 0; i < m.getlastColIdx(); i++) 
+            {
+                // handling kasus solusi tidak tunggal dalam parametrik yang belum terassign karena index di luar looping
+                if (Solution[i] == null) 
+                {
+                    Solution[i] = "X" + (i+1) + " = " + Parametrik[i] + ", dengan " + Parametrik[i] + " bilangan Real.";
                 }
                 System.out.println(Solution[i]); // tampilkan ke layar
             }
         }
         // TIdak ada solusi
-        else // isSol_Exist(m) == false
+        else // isSolExist(m) == false
+        {
+            System.out.println("Sistem persamaan linear tidak memiliki solusi");
+        }
+    }
+
+    public static void gaussJordanElimination(Matrix m)
+    {
+        m.getEselonBarisTereduksi();
+        
+        if (isSolExist(m))
+        {
+            char[] Parametrik = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'}; // karakter untuk solusi tidak tunggal
+            String[] Solution;
+            Solution = new String[m.getlastColIdx()];
+
+            int i = 0;
+            int idx_col = 0;
+            while (idx_col != -1 && i < m.getRow()) 
+            {
+                double notzero = m.getNotZero(i);
+                idx_col = m.getColIdx(i, notzero);
+
+                if (idx_col != -1)
+                {
+                    if (m.getElmt(i, m.getlastColIdx()) == 0.0)
+                    {
+                        int a, ada = 0;
+                        for (a = idx_col; a < m.getlastColIdx(); a++)
+                        {
+                            if (m.getElmt(i, a) != 0) 
+                            {
+                                ada++;
+                            }
+                        }
+                        if (ada > 0)
+                        {
+                            Solution[idx_col] = "X" + (idx_col+1) + " = ";     
+                        }
+                        else
+                        { 
+                            Solution[idx_col] = "X" + (idx_col+1) + " = " + m.getElmt(i, m.getlastColIdx());
+                        }       
+                    }
+                    else
+                    {
+                        Solution[idx_col] = "X" + (idx_col+1) + " = " + m.getElmt(i, m.getlastColIdx());
+                    }
+                    int j;
+                    for (j = idx_col+1; j < m.getlastColIdx(); j++)
+                    {
+                        if (m.getElmt(i, j) != 0 && isParametrikSolution(m, j))
+                        {
+                            Solution[j] = "X" + (j+1) + " = " + Parametrik[j-1] + ", dengan " + Parametrik[j-1] + " bilangan Real.";
+                            if (m.getElmt(i, j) < 0)
+                            {
+                                Solution[idx_col] += " + " + (-1)*m.getElmt(i, j) + " " + Parametrik[j-1];
+                            }
+                            else
+                            {
+                                Solution[idx_col] += " - " + m.getElmt(i, j) + " " + Parametrik[j-1];
+                            }
+                        }
+                    }
+                }
+                i++;
+            }
+            // OUTPUT
+            for (i = 0; i < m.getlastColIdx(); i++) 
+            {
+                // handling kasus solusi tidak tunggal dalam parametrik yang belum terassign karena index di luar looping
+                if (Solution[i] == null) 
+                {
+                    Solution[i] = "X" + (i+1) + " = " + Parametrik[i] + ", dengan " + Parametrik[i] + " bilangan Real.";
+                }
+                System.out.println(Solution[i]);    // tampilkan ke layar
+            }
+        }
+        // TIdak ada solusi
+        else // isSolExist(m) == false
         {
             System.out.println("Sistem persamaan linear tidak memiliki solusi");
         }

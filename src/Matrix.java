@@ -57,6 +57,10 @@ public class Matrix {
         return this.getCol() - 1;
     }
 
+    public void setElmt(int i, int j, double val) {
+        this.Mat[i][j] = val;
+    }
+
     // INPUT & OUTPUT //
     public void readMatrix() {
         for (int i = 0; i < getRow(); i++) {
@@ -153,29 +157,6 @@ public class Matrix {
         }
     }
 
-    /*
-     * BELUM KEPAKE TERNYATA GA JADI MAKE
-     * public void multiplyRow(int row, double x)
-     * // Mengalikan setiap elemen pada baris dengan suatu konstanta
-     * {
-     * int i;
-     * for (i = 0; i < getCol(); i++)
-     * {
-     * this.Mat[row][i] = this.Mat[row][i] * x;
-     * }
-     * }
-     * 
-     * public void minusRow(int row, double x)
-     * // Mengurangi setiap elemen pada baris dengan suatu konstanta
-     * {
-     * int i;
-     * for (i = 0; i < getCol(); i++)
-     * {
-     * this.Mat[row][i] = this.Mat[row][i] - x;
-     * }
-     * }
-     */
-
     public void negatedZero()
     // Mengatasi nilai negatif 0 yang terdapat pada matrix eselon
     {
@@ -189,13 +170,13 @@ public class Matrix {
         }
     }
 
-    public void sortRowZero()
+    public int sortRowZero()
     // Mengurutkan baris berdasarkan jumlah angka 0 di depan, terurut membesar
     // Jika jumlah angka 0 di depan sama, maka baris dengan angka 1 pertama kali
     // setelah 0 (leading 1) didahulukan
     {
         boolean isSwap = true;
-        int i, row = 0;
+        int i, row = 0, cnt = 0;
 
         while (row < getRow() - 1 && isSwap) {
             isSwap = false;
@@ -203,11 +184,13 @@ public class Matrix {
                 if ((countZero(i) < countZero(i - 1))
                         || (countZero(i) == countZero(i - 1) && getNotZero(i) == 1 && getNotZero(i - 1) != 1)) {
                     swap(i, i - 1);
+                    cnt++;
                     isSwap = true;
                 }
             }
             row++;
         }
+        return cnt;
     }
 
     public void getEselonBaris()
@@ -242,7 +225,7 @@ public class Matrix {
         negatedZero(); // mengatasi negatif 0 pada matrix eselon
     }
 
-    public void getEselonBaris_Tereduksi()
+    public void getEselonBarisTereduksi()
     // Mendapatkan matrix eselon baris tereduksi
     {
         getEselonBaris(); // dapatkan eselon baris
@@ -317,8 +300,9 @@ public class Matrix {
     }
 
     public static double determinantWithOBE(Matrix m1) {
+        int cnt = 0;
         double res = 1;
-        m1.sortRowZero();
+        cnt += m1.sortRowZero();
         System.out.println();
         for (int i = 0; i < m1.row; i++) {
             int firstNonZeroIdx = m1.findIdxNotZero(i);
@@ -330,14 +314,12 @@ public class Matrix {
                     }
                 }
             }
-            m1.displayMatrix();
-            System.out.println();
-            m1.sortRowZero();
+            cnt += m1.sortRowZero();
         }
         m1.negatedZero();
         for (int i = 0; i < m1.row; i++) {
             res *= m1.Mat[i][i];
         }
-        return res;
+        return (cnt % 2 == 0)? res : -res;
     }
 }
