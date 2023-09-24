@@ -17,7 +17,7 @@ public class SPL {
         return res;
     }
 
-    public boolean isSolExist(Matrix m)
+    public static boolean isSolExist(Matrix m)
     // Mengirim true jika SPL memiliki solusi
     {
         int i;
@@ -34,7 +34,7 @@ public class SPL {
         return Sol_exist;
     }
 
-    public boolean isParametrikSolution(Matrix m, int col)
+    public static boolean isParametrikSolution(Matrix m, int col)
     // Mengirim true jika pada suatu kolom matriks tidak ada yang jadi leading one baris
     {
         boolean found_leadOne = false;
@@ -62,7 +62,7 @@ public class SPL {
         return (found_leadOne || countO == m.getRow());
     }
 
-    public void gaussElimination(Matrix m)
+    public static void gaussElimination(Matrix m)
     // Mendapatkan solusi SPL dengan metode Eliminasi Gauss
     {
         m.getEselonBaris(); // mendapatkan matrix eselon baris
@@ -183,7 +183,7 @@ public class SPL {
         }
     }
 
-    public void gaussJordanElimination(Matrix m)
+    public static void gaussJordanElimination(Matrix m)
     {
         m.getEselonBarisTereduksi();
         
