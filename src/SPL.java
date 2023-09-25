@@ -113,12 +113,26 @@ public class SPL {
 
                     for (k = idx_col+1; k < m.getlastColIdx(); k++) {
                         if (isParametrikSolution(m, k)) {
-                            Solution[k] = "X" + (k+1) + " = " + Parametrik[k-1] + ", dengan " + Parametrik[k-1] + " bilangan Real.";
+                            if (Solution[k] == null) {
+                                Solution[k] = "X" + (k+1) + " = " + Parametrik[k-1] + ", dengan " + Parametrik[k-1] + " bilangan Real.";
+                            }
+
                             if (Row_Temp.getElmt(i, k) != 0) {
                                 if (Row_Temp.getElmt(i, k) < 0) {
-                                    Solution[idx_col] += " + " + (-1)*Row_Temp.getElmt(i, k) + " " + Parametrik[k-1];
+                                    if (Row_Temp.getElmt(i, Row_Temp.getlastColIdx()) == 0) {
+                                        Solution[idx_col] += "" + (-1)*Row_Temp.getElmt(i, k) + " " + Parametrik[k-1];
+                                    } else if (Row_Temp.getElmt(i, k) != -1) {
+                                        Solution[idx_col] += " + " + (-1)*Row_Temp.getElmt(i, k) + " " + Parametrik[k-1];
+                                    } else { // Row_Temp.getElmt(i, k) == -1
+                                        Solution[idx_col] += " + " + Parametrik[k-1];
+                                    }
+                                
                                 } else {
-                                    Solution[idx_col] += " - " + Row_Temp.getElmt(i, k) + " " + Parametrik[k-1];
+                                    if (Row_Temp.getElmt(i, k) != 1) {
+                                        Solution[idx_col] += " - " + Row_Temp.getElmt(i, k) + " " + Parametrik[k-1];
+                                    } else { // Row_Temp.getElmt(i, k) == 1
+                                        Solution[idx_col] += " - " + Parametrik[k-1];
+                                    }
                                 }
                             }
                         }
