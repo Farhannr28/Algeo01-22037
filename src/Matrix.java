@@ -262,14 +262,14 @@ public class Matrix {
     }
 
     public static Matrix minor(Matrix m, int r, int c) {
-        Matrix minorM = new Matrix(m.row - 1, m.col - 1);
+        Matrix minorM = new Matrix(m.getRow() - 1, m.getCol() - 1);
         int rm = 0, cm = 0;
-        for (int i = 0; i < m.row; i++) {
+        for (int i = 0; i < m.getRow(); i++) {
             if (i != r) {
                 cm = 0;
-                for (int j = 0; j < m.col; j++) {
+                for (int j = 0; j < m.getCol(); j++) {
                     if (j != c) {
-                        minorM.Mat[rm][cm] = m.Mat[i][j];
+                        minorM.setElmt(rm, cm, m.getElmt(i, j));
                         cm++;
                     }
                 }
@@ -280,20 +280,20 @@ public class Matrix {
     }
 
     public static double determinantWithCofactor(Matrix m1) {
-        if (m1.row == 1) {
-            return m1.Mat[0][0];
+        if (m1.getRow() == 1) {
+            return m1.getElmt(0, 0);
         }
         double res = 0;
-        for (int i = 0; i < m1.row; i++) {
-            res += (i % 2 == 1) ? (-1.0) * m1.Mat[0][i] * determinantWithCofactor(minor(m1, 0, i))
-                    : m1.Mat[0][i] * determinantWithCofactor(minor(m1, 0, i));
+        for (int i = 0; i < m1.getRow(); i++) {
+            res += (i % 2 == 1) ? (-1.0) * m1.getElmt(0, i) * determinantWithCofactor(minor(m1, 0, i))
+                    : m1.getElmt(0, i) * determinantWithCofactor(minor(m1, 0, i));
         }
         return res;
     }
 
     public int findIdxNotZero(int r) {
-        for (int i = 0; i < this.col; i++) {
-            if (this.Mat[r][i] != 0)
+        for (int i = 0; i < this.getCol(); i++) {
+            if (this.getElmt(r, i) != 0)
                 return i;
         }
         return -1;
@@ -303,14 +303,13 @@ public class Matrix {
         int cnt = 0;
         double res = 1;
         cnt += m1.sortRowZero();
-        System.out.println();
-        for (int i = 0; i < m1.row; i++) {
+        for (int i = 0; i < m1.getRow(); i++) {
             int firstNonZeroIdx = m1.findIdxNotZero(i);
-            for (int j = i + 1; j < m1.row; j++) {
-                if (m1.Mat[j][firstNonZeroIdx] != 0) {
-                    double mult = m1.Mat[j][firstNonZeroIdx];
-                    for (int k = firstNonZeroIdx; k < m1.col; k++) {
-                        m1.Mat[j][k] = m1.Mat[j][k] - (m1.Mat[i][k] / m1.Mat[i][firstNonZeroIdx]) * mult;
+            for (int j = i + 1; j < m1.getRow(); j++) {
+                if (m1.getElmt(j, firstNonZeroIdx) != 0) {
+                    double mult = m1.getElmt(j, firstNonZeroIdx);
+                    for (int k = firstNonZeroIdx; k < m1.getCol(); k++) {
+                        m1.setElmt(j, k, m1.getElmt(j, k) - (m1.getElmt(i, k) / m1.getElmt(i, firstNonZeroIdx)) * mult);
                     }
                 }
             }
@@ -318,8 +317,8 @@ public class Matrix {
         }
         m1.negatedZero();
         for (int i = 0; i < m1.row; i++) {
-            res *= m1.Mat[i][i];
+            res *= m1.getElmt(i, i);
         }
-        return (cnt % 2 == 0)? res : -res;
+        return (cnt % 2 == 0 || res == 0)? res : (-1.0) * res;
     }
 }
