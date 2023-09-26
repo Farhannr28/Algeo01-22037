@@ -288,6 +288,9 @@ public class Matrix {
             res += (i % 2 == 1) ? (-1.0) * m1.getElmt(0, i) * determinantWithCofactor(minor(m1, 0, i))
                     : m1.getElmt(0, i) * determinantWithCofactor(minor(m1, 0, i));
         }
+        if (res == -0.0){
+            return 0;
+        }
         return res;
     }
 
@@ -319,7 +322,24 @@ public class Matrix {
         for (int i = 0; i < m1.row; i++) {
             res *= m1.getElmt(i, i);
         }
-        return (cnt % 2 == 0 || res == 0)? res : (-1.0) * res;
+        if (res == -0.0 || res == 0){
+            return 0;
+        }
+        if (cnt % 2 == 0){
+            return res;
+        } else {
+            return -res;
+        }
+    }
+
+    public void copyMatrix(Matrix M){
+    // Menduplikasi nilai matrikx dari M
+    // Prequisite : ukuran kedua matrix sama
+        for(int i=0; i<getRow(); i++){
+            for (int j=0; j<getCol(); j++){
+                this.Mat[i][j] = M.Mat[i][j];
+            }
+        }
     }
 
     public void transpose(){
@@ -330,7 +350,7 @@ public class Matrix {
                 temp.Mat[i][j] = getElmt(j,i);
             }
         }
-        this.Mat = temp.Mat;
+        this.copyMatrix(temp);
     }
 
     public static Matrix multiplyMatrix(Matrix M1, Matrix M2){
@@ -347,5 +367,127 @@ public class Matrix {
             }
         }
         return ans;
+    }
+
+    public boolean isIdentity(){
+        boolean identity = true;
+        for (int i=0; i<getRow(); i++){
+            for (int j=0; j<getCol(); j++){
+                if (i==j){
+                    if (getElmt(i, j)!=1){
+                        identity = false;
+                    }
+                } else {
+                    if (getElmt(i, j)!=0){
+                        identity = false;
+                    }
+                }
+            }
+        }
+        return identity;
+    }
+
+    public static Matrix getIdentityMatrix(int n){
+    // Mengirimkan Matrix identitas dari Matrix ukuran NxN
+        Matrix identity = new Matrix(n, n);
+        for (int i=0; i<n; i++){
+            for (int j=0; j<n; j++){
+                if (i==j){
+                    identity.Mat[i][j] = 1;
+                } else {
+                    identity.Mat[i][j] = 0;
+                }
+            }
+        }    
+        return identity;
+    }
+    
+    public Matrix sortRowZeroInvers(Matrix m){
+        boolean isSwap = true;
+        int i, row = 0;
+        while (row < getRow() - 1 && isSwap) {
+            isSwap = false;
+            for (i = getRow() - 1; i > row; i--) {
+                if ((countZero(i) < countZero(i - 1))
+                        || (countZero(i) == countZero(i - 1) && getNotZero(i) == 1 && getNotZero(i - 1) != 1)) {
+                    swap(i, i - 1);
+                    m.swap(i, i-1);
+                    isSwap = true;
+                }
+            }
+            row++;
+        }
+        return m;
+    }
+
+    public Matrix getEselonTereduksiInvers(Matrix m){
+        // Gauss
+        m = this.sortRowZeroInvers(m); // mengurutkan baris berdasarkan jumlah angka 0 di depan
+        int i, j, k, idx_col;
+        double nZero, underlead;
+        for (i = 0; i < getRow(); i++) {
+            nZero = getNotZero(i);
+            dividedRow(i, nZero); // membagi elemen dalam satu baris dengan angka bukan 0 terdepan agar menjadi leading one
+            m.dividedRow(i, nZero);
+            idx_col = getColIdx(i, 1);
+
+            // cek di bawah leading one tsb apakah ada yang != 0
+            j = i + 1;
+            while (j < getRow() && idx_col != (-1)) {
+                // kondisi di bawah leading one tsb ada yang!= 0
+                if (getElmt(j, idx_col) != 0) {
+                    // melakukan operasi baris elementer agar semua ELMT di bawah leading one tsb = 0
+                    underlead = getElmt(j, idx_col);
+                    for (k = 0; k < getCol(); k++) {
+                        this.Mat[j][k] = getElmt(j, k) - (underlead * getElmt(i, k));
+                        m.Mat[j][k] -= (underlead * m.Mat[i][k]);
+                    }
+                }
+                j++;
+            }
+            m = this.sortRowZeroInvers(m); // mengurutkan baris berdasarkan jumlah angka 0 di depan
+            negatedZero(); // mengatasi negatif 0 pada matrix eselon
+            m.negatedZero();
+        }
+        // Gauss-Jordan
+        double above;
+        for (i = getlastRowIdx(); i > 0; i--) {
+            idx_col = getColIdx(i, 1);
+            if (idx_col != -1) {
+                // cek di atas leading one tsb apakah ada yang != 0
+                for (j = 0; j < i; j++) {
+                    above = getElmt(j, idx_col);
+                    if (above != 0) // kondisi di atas leading one tsb ada yang != 0
+                    {
+                        // melakukan operasi baris elementer agar semua ELMT di atas leading one tsb = 0
+                        for (k = getCol() - 1; k >= 0; k--) {
+                            this.Mat[j][k] = getElmt(j, k) - (above * getElmt(i, k));
+                            m.Mat[j][k] -= (above * m.Mat[i][k]);
+                        }
+                    }
+                }
+            }
+            negatedZero(); // mengatasi negatif 0 pada matrix eselon
+            m.negatedZero();
+        }
+        return m;
+    }
+
+    public boolean InversWithGaussJordan(){
+        // Mengembalikan True jika Invers berhasil
+        Matrix Invers = new Matrix(getRow(), getCol());
+        Invers.copyMatrix(this);
+        if (determinantWithOBE(Invers)==0.0){
+            // Gagal di invers karena determinannya 0
+            return false;
+        }
+        if (Invers.isIdentity()){
+            // Invers dari identitas adalah dirinya sendiri
+            return true;
+        }
+        Matrix Identity = getIdentityMatrix(this.getRow());
+        Invers = this.getEselonTereduksiInvers(Identity);
+        this.copyMatrix(Invers);
+        return true; 
     }
 }
