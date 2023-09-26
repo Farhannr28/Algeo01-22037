@@ -490,4 +490,36 @@ public class Matrix {
         this.copyMatrix(Invers);
         return true; 
     }
+
+    public boolean InversWithCofactor(){
+        // Mengembalikan True jika Invers berhasil
+        Matrix Invers = new Matrix(getRow(), getCol());
+        Invers.copyMatrix(this);
+        double det = determinantWithCofactor(Invers);
+        if (det==0.0){
+            // Gagal di invers karena determinannya 0
+            return false;
+        }
+        if (Invers.isIdentity()){
+            // Invers dari identitas adalah dirinya sendiri
+            return true;
+        }
+        for (int i=0; i<getRow(); i++){
+            for (int j=0; j<getCol(); j++){
+                Invers.Mat[i][j] = determinantWithCofactor(minor(this,i,j));
+                if ((i+j) % 2 != 0){
+                    Invers.Mat[i][j] = 0 - Invers.Mat[i][j];
+                }
+            }
+        }
+        Invers.transpose();
+        for (int i=0; i<getRow(); i++){
+            for (int j=0; j<getCol(); j++){
+                Invers.Mat[i][j] /= det;
+            }
+        }
+        Invers.negatedZero();
+        this.copyMatrix(Invers);
+        return true; 
+    }
 }
