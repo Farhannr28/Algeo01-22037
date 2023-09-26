@@ -105,10 +105,10 @@ public class SPL {
                         if (ada > 0) {
                             Solution[idx_col] = "X" + (idx_col + 1) + " = ";
                         } else { 
-                            Solution[idx_col] = "X" + (idx_col+1) + " = " + Row_Temp.getElmt(i, m.getlastColIdx());
+                            Solution[idx_col] = "X" + (idx_col+1) + " = " + Row_Temp.getElmt(i, m.getlastColIdx()) + " ";
                         }       
                     } else {
-                        Solution[idx_col] = "X" + (idx_col+1) + " = " + Row_Temp.getElmt(i, m.getlastColIdx());
+                        Solution[idx_col] = "X" + (idx_col+1) + " = " + Row_Temp.getElmt(i, m.getlastColIdx()) + " ";
                     }
 
                     for (k = idx_col+1; k < m.getlastColIdx(); k++) {
@@ -119,19 +119,21 @@ public class SPL {
 
                             if (Row_Temp.getElmt(i, k) != 0) {
                                 if (Row_Temp.getElmt(i, k) < 0) {
-                                    if (Row_Temp.getElmt(i, Row_Temp.getlastColIdx()) == 0) {
-                                        Solution[idx_col] += "" + (-1)*Row_Temp.getElmt(i, k) + " " + Parametrik[k-1];
-                                    } else if (Row_Temp.getElmt(i, k) != -1) {
-                                        Solution[idx_col] += " + " + (-1)*Row_Temp.getElmt(i, k) + " " + Parametrik[k-1];
+                                    if (Row_Temp.getElmt(i, Row_Temp.getlastColIdx()) != 0) {
+                                        Solution[idx_col] += "+ ";
+                                    } 
+                                    
+                                    if (Row_Temp.getElmt(i, k) != -1) {
+                                        Solution[idx_col] += (-1)*Row_Temp.getElmt(i, k) + " " + Parametrik[k-1] + " ";
                                     } else { // Row_Temp.getElmt(i, k) == -1
-                                        Solution[idx_col] += " + " + Parametrik[k-1];
+                                        Solution[idx_col] += Parametrik[k-1] + " ";
                                     }
                                 
                                 } else {
                                     if (Row_Temp.getElmt(i, k) != 1) {
-                                        Solution[idx_col] += " - " + Row_Temp.getElmt(i, k) + " " + Parametrik[k-1];
+                                        Solution[idx_col] += "- " + Row_Temp.getElmt(i, k) + " " + Parametrik[k-1] + " ";
                                     } else { // Row_Temp.getElmt(i, k) == 1
-                                        Solution[idx_col] += " - " + Parametrik[k-1];
+                                        Solution[idx_col] += "- " + Parametrik[k-1] + " ";
                                     }
                                 }
                             }
@@ -180,20 +182,36 @@ public class SPL {
                         if (ada > 0) {
                             Solution[idx_col] = "X" + (idx_col+1) + " = ";     
                         } else { 
-                            Solution[idx_col] = "X" + (idx_col+1) + " = " + m.getElmt(i, m.getlastColIdx());
+                            Solution[idx_col] = "X" + (idx_col+1) + " = " + m.getElmt(i, m.getlastColIdx()) + " ";
                         }       
                     } else {
-                        Solution[idx_col] = "X" + (idx_col+1) + " = " + m.getElmt(i, m.getlastColIdx());
+                        Solution[idx_col] = "X" + (idx_col+1) + " = " + m.getElmt(i, m.getlastColIdx()) + " ";
                     }
 
                     int j;
                     for (j = idx_col+1; j < m.getlastColIdx(); j++) {
                         if (m.getElmt(i, j) != 0 && isParametrikSolution(m, j)) {
-                            Solution[j] = "X" + (j+1) + " = " + Parametrik[j-1] + ", dengan " + Parametrik[j-1] + " bilangan Real.";
+                            if (Solution[j] == null) {
+                                Solution[j] = "X" + (j+1) + " = " + Parametrik[j-1] + ", dengan " + Parametrik[j-1] + " bilangan Real.";
+                            }
+
                             if (m.getElmt(i, j) < 0) {
-                                Solution[idx_col] += " + " + (-1)*m.getElmt(i, j) + " " + Parametrik[j-1];
+                                if (m.getElmt(i, m.getlastColIdx()) != 0) {
+                                    Solution[idx_col] += "+ ";
+                                }
+                                
+                                if (m.getElmt(i, j) != -1) {
+                                    Solution[idx_col] += (-1)*m.getElmt(i, j) + " " + Parametrik[j-1] + " ";
+                                } else { // m.getElmt(i, j) == -1
+                                    Solution[idx_col] += Parametrik[j-1] + " ";
+                                }
+
                             } else {
-                                Solution[idx_col] += " - " + m.getElmt(i, j) + " " + Parametrik[j-1];
+                                if (m.getElmt(i, j) != 1) {
+                                    Solution[idx_col] += "- " + m.getElmt(i, j) + " " + Parametrik[j-1] + " ";
+                                } else { // m.getElmt(i, j) == 1
+                                    Solution[idx_col] += "- " + Parametrik[j-1] + " ";
+                                }
                             }
                         }
                     }
