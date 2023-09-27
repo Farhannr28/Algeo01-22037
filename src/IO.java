@@ -70,13 +70,13 @@ public class IO {
         return res;
     }
 
-    public double[][] readPointFromFile(){
+    public Matrix readPointFromFile(){
         int row = getRow();
-        double[][] res = new double[row][2];
+        Matrix res = new Matrix(row, 2);
         openFile();
         for (int i = 0; i < row; i++){
             for (int j = 0; j < 2; j++){
-                res[i][j] = sc.nextDouble();
+                res.setElmt(i, j, sc.nextDouble());
             }
         }
         closeFile();
@@ -84,12 +84,27 @@ public class IO {
     }
 
     public double[] readBicubicSpline(){
-        double [] res = new double[18];
+        double[] res = new double[18];
         openFile();
         for (int i = 0; i < 18; i++){
             res[i] = sc.nextDouble();
         }
         closeFile();
         return res;
+    }
+
+    // Write
+    public void writeBicubicSpline(double res){
+        try {
+            String namaFile = "C:\\Users\\adril\\ITB Files\\Semester III\\Linear and Geometry Algebra\\Tubes\\Tubes 1\\Algeo01-22037\\test\\bicubic.txt";
+            File file = new File(namaFile);
+            file.createNewFile();
+            FileWriter write = new FileWriter(namaFile);
+            write.write(Double.toString(res));
+            write.close();
+        } catch (Exception e) {
+            System.out.println("error");
+            // TODO: handle exception
+        }
     }
 }

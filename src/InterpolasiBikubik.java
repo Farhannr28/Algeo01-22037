@@ -12,21 +12,36 @@ public class InterpolasiBikubik {
         String fileName = readileName();
         IO f = new IO(fileName);
         double[] temp = f.readBicubicSpline();
-        Matrix M = new Matrix(4, 4);
+        Matrix M = new Matrix(16, 1);
         Matrix X = new Matrix(16, 16);
-        int idx = 0;
+        Matrix res = new Matrix(16, 1);
+        Matrix invX = new Matrix(16, 16);
+        double askX, askY, askRes = 0;
 
         // Construct Matrix X
         constructX(X);
-        X.displayMatrix();
 
         // Read input from file
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                M.setElmt(i, j, temp[idx]);
+        for (int i = 0; i < 16; i++){
+            M.setElmt(i, 0, temp[i]);
+        }
+        askX = temp[16];
+        askY = temp[16];
+
+        // Temporary Way To Solve Bicubic
+        invX.copyMatrix(X);
+        boolean isInvertible = invX.InversWithGaussJordan();
+        res = Matrix.multiplyMatrix(invX, M);
+
+        // solve for x and y
+        int idx = 0;
+        for (int j = 0; j < 4; j++){
+            for (int i = 0; i < 4; i++){
+                askRes += res.getElmt(idx, 0) * Math.pow(askX, i) * Math.pow(askY, j);
                 idx++;
             }
         }
+        System.out.println(askRes);
     }
 
     // Construct Matrix X
