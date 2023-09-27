@@ -357,12 +357,12 @@ public class Matrix {
     public static Matrix multiplyMatrix(Matrix M1, Matrix M2){
     // Mengeluarkan Matrix MxN yang merupakan hasil perkalian Matrix MxK dengan KxN
         Matrix ans = new Matrix(M1.getRow(), M2.getCol());
-        int temp;
+        double temp;
         for (int i=0; i<M1.getRow(); i++){
             for (int j=0; j<M2.getCol(); j++){
                 temp = 0;
                 for (int k=0; k<M1.getCol(); k++){
-                    temp += (M1.Mat[i][k] * M2.Mat[k][j]);
+                    temp = temp + (M1.Mat[i][k] * M2.Mat[k][j]);
                 }
                 ans.Mat[i][j] = temp;
             }
@@ -492,10 +492,10 @@ public class Matrix {
         return true; 
     }
 
-    public boolean InversWithCofactor(){
+    public static boolean InversWithCofactor(Matrix m){
         // Mengembalikan True jika Invers berhasil
-        Matrix Invers = new Matrix(getRow(), getCol());
-        Invers.copyMatrix(this);
+        Matrix Invers = new Matrix(m.getRow(), m.getCol());
+        Invers.copyMatrix(m);
         double det = determinantWithCofactor(Invers);
         if (det==0.0){
             // Gagal di invers karena determinannya 0
@@ -505,22 +505,22 @@ public class Matrix {
             // Invers dari identitas adalah dirinya sendiri
             return true;
         }
-        for (int i=0; i<getRow(); i++){
-            for (int j=0; j<getCol(); j++){
-                Invers.Mat[i][j] = determinantWithCofactor(minor(this,i,j));
+        for (int i=0; i<m.getRow(); i++){
+            for (int j=0; j<m.getCol(); j++){
+                Invers.Mat[i][j] = determinantWithCofactor(minor(m,i,j));
                 if ((i+j) % 2 != 0){
                     Invers.Mat[i][j] = 0 - Invers.Mat[i][j];
                 }
             }
         }
         Invers.transpose();
-        for (int i=0; i<getRow(); i++){
-            for (int j=0; j<getCol(); j++){
+        for (int i=0; i<m.getRow(); i++){
+            for (int j=0; j<m.getCol(); j++){
                 Invers.Mat[i][j] /= det;
             }
         }
         Invers.negatedZero();
-        this.copyMatrix(Invers);
+        m.copyMatrix(Invers);
         return true; 
     }
 }

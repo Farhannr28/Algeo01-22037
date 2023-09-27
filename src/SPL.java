@@ -32,6 +32,18 @@ public class SPL {
         return Sol_exist;
     }
 
+    public static boolean isHasilHomogen(Matrix m){
+    // Mengirimkan true jika hasil spl adalah homogen
+        boolean ans;
+        ans = true;
+        for (int i=0; i<m.getRow(); i++){
+            if (m.getElmt(i,0) != 0){
+                ans = false;
+            }
+        }
+        return ans;
+    }
+
     public static boolean isParametrikSolution(Matrix m, int col)
     // Mengirim true jika pada suatu kolom matriks tidak ada yang jadi leading one baris
     {
@@ -230,5 +242,29 @@ public class SPL {
             Solution[0] = "Sistem persamaan linear tidak memiliki solusi";
         }
         return Solution;
+    }
+
+    public static Matrix metodeBalikan(Matrix m){
+        Matrix ans = new Matrix(m.getRow(), 1);
+        Matrix b = new Matrix(m.getRow(), 1);
+        Matrix a = new Matrix(m.getRow(), m.getCol()-1);
+        a = Matrix.getCoefficient(m);
+        for (int i=0; i<m.getRow(); i++){
+            b.Mat[i][0] = m.Mat[i][m.getCol()-1]; 
+        }
+        if (isHasilHomogen(b)){
+            if (Matrix.InversWithCofactor(a)){
+                for (int i=0; i<m.getRow(); i++){
+                    ans.Mat[i][0] = 0;
+                }
+            }
+            // else tidak dapat menggunakan balikan
+        } else {
+            if (Matrix.InversWithCofactor(a)){
+                ans = Matrix.multiplyMatrix(a, b);
+            }
+            // else tidak dapat menggunakan balikan
+        }
+        return ans;
     }
 }
