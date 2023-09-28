@@ -6,11 +6,10 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class InterpolasiBikubik {
+    
     public static void main(String[] args) {
-        Scanner in = new Scanner(System.in);
-        int choice;
         // Variable declaration
-        String fileName = readileName();
+        String fileName = IO.readfileName();
         IO f = new IO(fileName);
         double[] temp = f.readBicubicSpline();
         Matrix M = new Matrix(16, 1);
@@ -29,7 +28,7 @@ public class InterpolasiBikubik {
         askX = temp[16];
         askY = temp[17];
 
-        // Temporary Way To Solve Bicubic
+        // Inverse X and multiply with M
         invX.copyMatrix(X);
         boolean isInvertible = invX.InversWithGaussJordan();
         res = Matrix.multiplyMatrix(invX, M);
@@ -42,9 +41,18 @@ public class InterpolasiBikubik {
                 idx++;
             }
         }
-        f.writeBicubicSpline(askRes);
-        in.close();
-        System.out.println(askRes);
+        System.out.println(">> Output Format");
+        System.out.println(">> 1. Terminal Screen");
+        System.out.println(">> 2. Save to file");
+        System.out.print(">> Enter choice: ");
+        int choice = IO.iinput.nextInt();
+        if (choice == 1){
+            System.out.println("f(" + askX + "," + askY + ") = " + askRes);
+        }
+        else{
+            String passString = "f(" + askX + "," + askY + ") = " + askRes;
+            f.writeBicubicSpline(passString);
+        }
     }
 
     // Construct Matrix X
@@ -111,24 +119,5 @@ public class InterpolasiBikubik {
                 row++;
             }
         }
-    }
-
-    public static String readileName() {
-        Scanner scanFile = new Scanner(System.in);
-        Scanner sc;
-        String fileName = "";
-        while (true) {
-            try {
-                System.out.print("Enter file name: ");
-                fileName = scanFile.nextLine();
-                File file = new File(fileName);
-                sc = new Scanner(file);
-                break;
-            } catch (FileNotFoundException e) {
-                System.out.println("There is no file with name " + fileName);
-            }
-        }
-        scanFile.close();
-        return fileName;
     }
 }

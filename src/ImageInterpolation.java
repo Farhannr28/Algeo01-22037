@@ -10,8 +10,6 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
 public class ImageInterpolation {
-    public static Scanner input = new Scanner(System.in); // string
-    public static Scanner masukan = new Scanner(System.in); // double
 
     public static void main(String[] args) throws IOException {
         // Declare
@@ -37,7 +35,7 @@ public class ImageInterpolation {
         }
 
         // get image file
-        String fileName = readfileName();
+        String fileName = IO.readfileName();
         File file = new File(fileName);
         BufferedImage img = ImageIO.read(file);
 
@@ -78,7 +76,7 @@ public class ImageInterpolation {
             }
         }
         System.out.print(">> Enter upscale of your image: ");
-        double k = masukan.nextDouble();
+        double k = IO.input.nextDouble();
 
         long newHeight = Math.round(k * img.getHeight());
         long newWidth = Math.round(k * img.getWidth());
@@ -140,7 +138,7 @@ public class ImageInterpolation {
         }
         try {
             System.out.print(">> Enter output file name: ");
-            String outputFileName = input.nextLine();
+            String outputFileName = IO.scan.nextLine();
             File outputImg = new File("test/" + outputFileName);
             ImageIO.write(newImage, "png", outputImg);
         } catch (Exception e) {
@@ -234,24 +232,5 @@ public class ImageInterpolation {
                 row++;
             }
         }
-    }
-
-    public static String readfileName() {
-        Scanner sc;
-        String fileName = "";
-        while (true) {
-            try {
-                System.out.print(">> Enter input file name: ");
-                fileName = input.nextLine();
-                File file = new File("test/" + fileName);
-                sc = new Scanner(file);
-                break;
-
-            } catch (FileNotFoundException e) {
-                System.out.println("There is no file with name " + fileName);
-            }
-        }
-        sc.close();
-        return "test/" + fileName;
     }
 }
