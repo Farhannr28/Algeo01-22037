@@ -20,40 +20,18 @@ public class ImageInterpolation {
         // Construct X and D
         InterpolasiBikubik.constructX(X);
         ImageInterpolation.constructD(D);
-        X.displayMatrix();
-        System.out.println();
-        D.displayMatrix();
-        System.out.println();
+
         // inverse matrix and save it to inverseX
         inverseX.copyMatrix(X);
         inverseX.InversWithGaussJordan();
 
         // multiply X and D and save it to multiplier
         multiplier = Matrix.multiplyMatrix(inverseX, D);
-        // double[][] makan = {
-        //     {0,0,0,0,0,16,0,0,0,0,0,0,0,0,0,0},
-        //     {0,0,0,0,-8,0,8,0,0,0,0,0,0,0,0,0},
-        //     {0,0,0,0,16,-40,32,-8,0,0,0,0,0,0,0,0},
-        //     {0,0,0,0,-8,24,-24,8,0,0,0,0,0,0,0,0},
-        //     {0,-8,0,0,0,0,0,0,0,8,0,0,0,0,0,0},
-        //     {0,-4,0,0,-4,4,0,0,0,0,4,0,0,0,0,0},
-        //     {0,32,-20,0,8,-4,-4,0,0,-24,16,-4,0,0,0,0},
-        //     {0,-20,12,0,-4,0,4,0,0,16,-12,4,0,0,0,0},
-        //     {0,16,0,0,0,-40,0,0,0,32,0,0,0,-8,0,0},
-        //     {0,8,0,0,32,-4,-24,0,-20,-4,0,0,0,0,-4,0},
-        //     {0,-64,40,0,-64,96,-68,24,40,-68,-16,-16,0,24,-16,0},
-        //     {0,40,-24,0,32,-52,52,-24,-20,40,16,16,0,-16,12,0},
-        //     {0,-8,0,0,0,24,0,0,0,-24,0,0,0,8,0,4},
-        //     {0,-4,0,0,-20,0,16,0,12,4,-12,0,0,0,4,-4},
-        //     {0,32,-20,0,40,-52,40,-16,-24,52,-52,12,0,-24,16,-4},
-        //     {0,-20,12,0,-20,28,-32,16,12,-32,40,-12,0,16,-12,4}
-        // };
         for (int i = 0; i < multiplier.getRow(); i++){
             for (int j = 0; j < multiplier.getCol(); j++){
                 multiplier.setElmt(i, j, multiplier.getElmt(i, j) / 4);
             }
         }
-        multiplier.displayMatrix();
 
         // get image file
         String fileName = InterpolasiBikubik.readileName();
@@ -98,7 +76,7 @@ public class ImageInterpolation {
         }
 
         System.out.print("Ingin memberbesar berapa: ");
-        double k = 2;
+        double k = 1.8;
 
         long newHeight = Math.round(k * img.getHeight());
         long newWidth = Math.round(k * img.getWidth());
@@ -106,26 +84,11 @@ public class ImageInterpolation {
 
         for (int i = 0; i < newHeight; i++) {
             for (int j = 0; j < newWidth; j++) {
-                double conX = ((double) img.getHeight() / (double) newHeight) * ((double) (2 * i + 1) / (double) 2)
-                        - 0.5;
+                double conX = ((double) img.getHeight() / (double) newHeight) * ((double) (2 * i + 1) / (double) 2) - 0.5;
                 double conY = ((double) img.getWidth() / (double) newWidth) * ((double) (2 * j + 1) / (double) 2) - 0.5;
                 if (1 <= conX && conX <= (double) img.getHeight() - 3 && 1 <= conY
                         && conY <= (double) img.getWidth() - 3) {
                     int x, y, rgb = 0;
-                    // if (conX != (double) img.getHeight() - 2) {
-                    //     x = (int) Math.floor(conX) - 1;
-                    //     conX = conX - Math.floor(conX);
-                    // } else {
-                    //     x = img.getHeight() - 4;
-                    //     conX = 1;
-                    // }
-                    // if (conY != (double) img.getWidth() - 2) {
-                    //     y = (int) Math.floor(conY) - 1;
-                    //     conY = conY - Math.floor(conY);
-                    // } else {
-                    //     y = img.getWidth() - 4;
-                    //     conY = 1;
-                    // }
                     x = (int) Math.floor(conX);
                     x -= 1;
                     conX -= Math.floor(conX);
@@ -136,14 +99,22 @@ public class ImageInterpolation {
                     double g = calcRGB(greenRes[x][y], conX, conY);
                     double b = calcRGB(blueRes[x][y], conX, conY);
                     rgb = 0;
-                    if (r >= 0)
+                    if (r >= 0 && r <= 255)
                         rgb += (int) Math.round(r);
+                    else if (r > 255)
+                        rgb += 255;
                     rgb <<= 8;
-                    if (g >= 0)
+                    if (g >= 0 && g <= 255)
                         rgb += (int) Math.round(g);
+                    else if (g > 255){
+                        rgb += 255;
+                    }
                     rgb <<= 8;
-                    if (b >= 0)
+                    if (b >= 0 && b <= 255)
                         rgb += (int) Math.round(b);
+                    else if(b > 255){
+                        rgb += 255;
+                    }
                     newImage.setRGB(j, i, rgb);
                 } else {
                     int x, y, rgb;
@@ -164,7 +135,7 @@ public class ImageInterpolation {
                 }
             }
         }
-        String outputFileName = "C:\\Users\\adril\\ITB Files\\Semester III\\Linear and Geometry Algebra\\Tubes\\Tubes 1\\Algeo01-22037\\test\\output.png";
+        String outputFileName = "C:\\Users\\adril\\ITB Files\\Semester III\\Linear and Geometry Algebra\\Tubes\\Tubes 1\\Algeo01-22037\\test\\output2.png";
         File outputImg = new File(outputFileName);
         ImageIO.write(newImage, "png", outputImg);
     }
