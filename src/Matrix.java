@@ -356,12 +356,12 @@ public class Matrix {
     public static Matrix multiplyMatrix(Matrix M1, Matrix M2) {
         // Mengeluarkan Matrix MxN yang merupakan hasil perkalian Matrix MxK dengan KxN
         Matrix ans = new Matrix(M1.getRow(), M2.getCol());
-        int temp;
+        double temp;
         for (int i = 0; i < M1.getRow(); i++) {
             for (int j = 0; j < M2.getCol(); j++) {
                 temp = 0;
                 for (int k = 0; k < M1.getCol(); k++) {
-                    temp += (M1.Mat[i][k] * M2.Mat[k][j]);
+                    temp = temp + (M1.Mat[i][k] * M2.Mat[k][j]);
                 }
                 ans.Mat[i][j] = temp;
             }

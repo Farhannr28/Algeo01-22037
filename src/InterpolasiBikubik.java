@@ -6,8 +6,9 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class InterpolasiBikubik {
-
     public static void main(String[] args) {
+        Scanner in = new Scanner(System.in);
+        int choice;
         // Variable declaration
         String fileName = readileName();
         IO f = new IO(fileName);
@@ -22,11 +23,11 @@ public class InterpolasiBikubik {
         constructX(X);
 
         // Read input from file
-        for (int i = 0; i < 16; i++){
+        for (int i = 0; i < 16; i++) {
             M.setElmt(i, 0, temp[i]);
         }
         askX = temp[16];
-        askY = temp[16];
+        askY = temp[17];
 
         // Temporary Way To Solve Bicubic
         invX.copyMatrix(X);
@@ -35,12 +36,14 @@ public class InterpolasiBikubik {
 
         // solve for x and y
         int idx = 0;
-        for (int j = 0; j < 4; j++){
-            for (int i = 0; i < 4; i++){
+        for (int j = 0; j < 4; j++) {
+            for (int i = 0; i < 4; i++) {
                 askRes += res.getElmt(idx, 0) * Math.pow(askX, i) * Math.pow(askY, j);
                 idx++;
             }
         }
+        f.writeBicubicSpline(askRes);
+        in.close();
         System.out.println(askRes);
     }
 
