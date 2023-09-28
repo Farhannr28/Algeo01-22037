@@ -343,15 +343,15 @@ public class Matrix {
         }
     }
 
-    public void transpose(){
+    public static Matrix transpose(Matrix m){
     // Mentranspose Matrix
-        Matrix temp = new Matrix(getRow(), getCol());
-        for (int i=0; i<getRow(); i++){
-            for (int j=0; j<getCol(); j++){
-                temp.Mat[i][j] = getElmt(j,i);
+        Matrix temp = new Matrix(m.getCol(), m.getRow());
+        for (int i=0; i<m.getCol(); i++){
+            for (int j=0; j<m.getRow(); j++){
+                temp.Mat[i][j] = m.getElmt(j,i);
             }
         }
-        this.copyMatrix(temp);
+        return temp;
     }
 
     public static Matrix multiplyMatrix(Matrix M1, Matrix M2){
@@ -513,14 +513,15 @@ public class Matrix {
                 }
             }
         }
-        Invers.transpose();
+        Matrix tr = new Matrix(m.getRow(), m.getCol());
+        tr = transpose(Invers);
         for (int i=0; i<m.getRow(); i++){
             for (int j=0; j<m.getCol(); j++){
-                Invers.Mat[i][j] /= det;
+                tr.Mat[i][j] /= det;
             }
         }
-        Invers.negatedZero();
-        m.copyMatrix(Invers);
+        tr.negatedZero();
+        m.copyMatrix(tr);
         return true; 
     }
 }
