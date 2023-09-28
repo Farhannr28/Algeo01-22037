@@ -1,15 +1,18 @@
 package src;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
 public class ImageInterpolation {
+    public static Scanner input = new Scanner(System.in); // string
+    public static Scanner masukan = new Scanner(System.in); // double
+
     public static void main(String[] args) throws IOException {
         // Declare
         Matrix X = new Matrix(16, 16);
@@ -27,14 +30,14 @@ public class ImageInterpolation {
 
         // multiply X and D and save it to multiplier
         multiplier = Matrix.multiplyMatrix(inverseX, D);
-        for (int i = 0; i < multiplier.getRow(); i++){
-            for (int j = 0; j < multiplier.getCol(); j++){
+        for (int i = 0; i < multiplier.getRow(); i++) {
+            for (int j = 0; j < multiplier.getCol(); j++) {
                 multiplier.setElmt(i, j, multiplier.getElmt(i, j) / 4);
             }
         }
 
         // get image file
-        String fileName = InterpolasiBikubik.readileName();
+        String fileName = readfileName();
         File file = new File(fileName);
         BufferedImage img = ImageIO.read(file);
 
@@ -74,9 +77,8 @@ public class ImageInterpolation {
                 blueRes[i - 1][j - 1] = Matrix.multiplyMatrix(multiplier, tempBlue);
             }
         }
-
-        System.out.print("Ingin memberbesar berapa: ");
-        double k = 1.8;
+        System.out.print(">> Enter upscale of your image: ");
+        double k = masukan.nextDouble();
 
         long newHeight = Math.round(k * img.getHeight());
         long newWidth = Math.round(k * img.getWidth());
@@ -84,7 +86,8 @@ public class ImageInterpolation {
 
         for (int i = 0; i < newHeight; i++) {
             for (int j = 0; j < newWidth; j++) {
-                double conX = ((double) img.getHeight() / (double) newHeight) * ((double) (2 * i + 1) / (double) 2) - 0.5;
+                double conX = ((double) img.getHeight() / (double) newHeight) * ((double) (2 * i + 1) / (double) 2)
+                        - 0.5;
                 double conY = ((double) img.getWidth() / (double) newWidth) * ((double) (2 * j + 1) / (double) 2) - 0.5;
                 if (1 <= conX && conX <= (double) img.getHeight() - 3 && 1 <= conY
                         && conY <= (double) img.getWidth() - 3) {
@@ -106,13 +109,13 @@ public class ImageInterpolation {
                     rgb <<= 8;
                     if (g >= 0 && g <= 255)
                         rgb += (int) Math.round(g);
-                    else if (g > 255){
+                    else if (g > 255) {
                         rgb += 255;
                     }
                     rgb <<= 8;
                     if (b >= 0 && b <= 255)
                         rgb += (int) Math.round(b);
-                    else if(b > 255){
+                    else if (b > 255) {
                         rgb += 255;
                     }
                     newImage.setRGB(j, i, rgb);
@@ -135,9 +138,16 @@ public class ImageInterpolation {
                 }
             }
         }
-        String outputFileName = "C:\\Users\\adril\\ITB Files\\Semester III\\Linear and Geometry Algebra\\Tubes\\Tubes 1\\Algeo01-22037\\test\\output2.png";
-        File outputImg = new File(outputFileName);
-        ImageIO.write(newImage, "png", outputImg);
+        try {
+            System.out.print(">> Enter output file name: ");
+            String outputFileName = input.nextLine();
+            File outputImg = new File("test/" + outputFileName);
+            ImageIO.write(newImage, "png", outputImg);
+        } catch (Exception e) {
+            // TODO: handle exception
+            System.out.println("error");
+            System.exit(0);
+        }
     }
 
     public static double calcRGB(Matrix mult, double x, double y) {
@@ -224,5 +234,24 @@ public class ImageInterpolation {
                 row++;
             }
         }
+    }
+
+    public static String readfileName() {
+        Scanner sc;
+        String fileName = "";
+        while (true) {
+            try {
+                System.out.print(">> Enter input file name: ");
+                fileName = input.nextLine();
+                File file = new File("test/" + fileName);
+                sc = new Scanner(file);
+                break;
+
+            } catch (FileNotFoundException e) {
+                System.out.println("There is no file with name " + fileName);
+            }
+        }
+        sc.close();
+        return "test/" + fileName;
     }
 }
