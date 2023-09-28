@@ -5,37 +5,40 @@ import java.io.*;
 
 public class IO {
     private String fileName;
-    private Scanner sc;
+    private Scanner sc; // for file
+    public static Scanner scan = new Scanner(System.in); // for string
+    public static Scanner input = new Scanner(System.in); // for double
+    public static Scanner iinput = new Scanner(System.in); // for int
 
     // Constructor
-    public IO(String fileName){
+    public IO(String fileName) {
         this.fileName = fileName;
     }
 
-    public String getFileName(){
+    public String getFileName() {
         return this.fileName;
     }
 
-
     // Open & Close File
-    public void openFile(){
+    public void openFile() {
         try {
             File file = new File(getFileName());
             this.sc = new Scanner(file);
         } catch (FileNotFoundException e) {
-            System.out.println("There is no file with name " + getFileName());
+            System.out.println(">> There is no file with name " + getFileName());
             System.exit(0);
         }
     }
-    public void closeFile(){
+
+    public void closeFile() {
         sc.close();
     }
 
     // Read File
-    public int getRow(){
+    public int getRow() {
         int cnt = 0;
         openFile();
-        while (sc.hasNextLine()){
+        while (sc.hasNextLine()) {
             sc.nextLine();
             cnt++;
         }
@@ -43,11 +46,11 @@ public class IO {
         return cnt;
     }
 
-    public int getCol(){
+    public int getCol() {
         int cnt = 0;
         openFile();
         Scanner scCol = new Scanner(sc.nextLine());
-        while (scCol.hasNextDouble()){
+        while (scCol.hasNextDouble()) {
             cnt++;
             scCol.nextDouble();
         }
@@ -56,13 +59,13 @@ public class IO {
         return cnt;
     }
 
-    public Matrix readMatrixFromFile(){
+    public Matrix readMatrixFromFile() {
         int row = getRow();
         int col = getCol();
         Matrix res = new Matrix(row, col);
         openFile();
-        for (int i = 0; i < row; i++){
-            for (int j = 0; j < col; j++){
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
                 res.setElmt(i, j, sc.nextDouble());
             }
         }
@@ -70,12 +73,12 @@ public class IO {
         return res;
     }
 
-    public Matrix readPointFromFile(){
+    public Matrix readPointFromFile() {
         int row = getRow();
         Matrix res = new Matrix(row, 2);
         openFile();
-        for (int i = 0; i < row; i++){
-            for (int j = 0; j < 2; j++){
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < 2; j++) {
                 res.setElmt(i, j, sc.nextDouble());
             }
         }
@@ -83,10 +86,10 @@ public class IO {
         return res;
     }
 
-    public double[] readBicubicSpline(){
+    public double[] readBicubicSpline() {
         double[] res = new double[18];
         openFile();
-        for (int i = 0; i < 18; i++){
+        for (int i = 0; i < 18; i++) {
             res[i] = sc.nextDouble();
         }
         closeFile();
@@ -94,17 +97,40 @@ public class IO {
     }
 
     // Write
-    public void writeBicubicSpline(double res){
+    public void writeBicubicSpline(String res) {
         try {
-            String namaFile = "C:\\Users\\adril\\ITB Files\\Semester III\\Linear and Geometry Algebra\\Tubes\\Tubes 1\\Algeo01-22037\\test\\bicubic.txt";
+            System.out.print(">> Enter output file name: ");
+            String namaFile = scan.nextLine();
+            namaFile = "test/" + namaFile;
             File file = new File(namaFile);
             file.createNewFile();
             FileWriter write = new FileWriter(namaFile);
-            write.write(Double.toString(res));
+            write.write(res);
             write.close();
         } catch (Exception e) {
             System.out.println("error");
             // TODO: handle exception
         }
+    }
+
+    public static String readfileName() {
+        Scanner sc;
+        scan = new Scanner(System.in);
+        String fileName = "";
+        while (true) {
+            try {
+                System.out.print(">> Enter input file name: ");
+                fileName = scan.nextLine();
+                File file = new File("test/" + fileName);
+                sc = new Scanner(file);
+                break;
+
+            } catch (FileNotFoundException e) {
+                System.out.println(">> There is no file with name " + fileName);
+            }
+        }
+        // scan.close();
+        sc.close();
+        return "test/" + fileName;
     }
 }
