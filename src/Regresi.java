@@ -7,19 +7,44 @@ public class Regresi {
     public static Matrix readRegresiKeyboard(){
         // Tabel M sampel N parameter (N kolom X, 1 kolom Y), dibaca menjadi matrix Mx(N+2) dengan kolom terdepan berisi 1
         int n, m;
+        System.out.println("Masukkan banyak sampel regresi (m): ");
         m=input.nextInt();
+        System.out.println("Masukkan banyak peubah regresi (n): ");
         n=input.nextInt();
-        Matrix read = new Matrix(m, n+1);
+        Matrix read = new Matrix(m, n);
+        System.out.println("Masukkan isi Matrix regresi (ukuran m x n): ");
         read.readMatrix();
-        Matrix mat = new Matrix(m, n+2);
+        Matrix augment = new Matrix(m, n+2);
+        if (m!=1){
+            System.out.println("Masukkan nilai-nilai hasil fungsi (y1...y"+(m)+"): ");
+        } else {
+            System.out.println("Masukkan nilai hasil fungsi (y): ");
+        }
         int i,j;
+        double a;
         for (i=0; i<m; i++){
-            mat.Mat[i][0] = 1;
-            for (j=1; j<n+2; j++){
-                mat.Mat[i][j] = read.Mat[i][j-1];
+            a=input.nextDouble();
+            augment.Mat[i][n+1] = a; 
+        }
+        for (i=0; i<m; i++){
+            augment.Mat[i][0] = 1;
+            for (j=1; j<n+1; j++){
+                augment.Mat[i][j] = read.Mat[i][j-1];
             }
         }
-        return mat;
+        return augment;
+    }
+
+    public static Matrix readTaksir(Matrix m){
+        double a;
+        Matrix taksir = new Matrix(1, m.getCol()-1);
+        taksir.Mat[0][0] = 1;
+        System.out.println("Masukkan nilai-nilai yang ingin ditaksir hasil fungsinya (xk): ");
+        for (int i=1; i<taksir.getCol(); i++){
+            a = input.nextDouble();
+            taksir.Mat[0][i] = a;
+        }
+        return taksir;
     }
 
     public static Matrix convertSPLMatrix(Matrix m){
@@ -83,12 +108,12 @@ public class Regresi {
     }
 
     public static double yRegresi(Matrix Xk, Matrix vektor){
-        // Mengembailkan hasil dari f(Xk), menggunakan matrix Xk berukuran 1xN dan vektor regresi berukuran Nx1
+        // Mengembailkan hasil dari f(Xk), menggunakan matrix Xk berukuran 1x(N+1) dan vektor regresi berukuran (N+1)x1
         Matrix M = Matrix.multiplyMatrix(Xk, vektor);
         return M.Mat[0][0];
     }
 
-    public static String persamaanRegresi(String[] SPLSol){
+    public static String persamaanRegresi(String[] SPLSol, double taksir){
         // Melakukan eliminasi gauss pada matrix SPL dan menghasilkan persamaan regresi
         String ans = "f(X) = ";
         String temp;
@@ -139,19 +164,20 @@ public class Regresi {
                 }
             }
         }
-        ans = ans + ", f(Xk) = ";
+        ans = ans + ", f(Xk) = " + taksir;
         return ans;
     }
 
     public static void main(String []args){
         String ans;
-        Matrix m = readRegresiKeyboard();
-        Matrix n = convertSPLMatrix(m);
+        Matrix augmented = readRegresiKeyboard();
+        Matrix Xk = readTaksir(augmented);
+        Matrix SPL = convertSPLMatrix(augmented);
         String[] sol;
-        sol = solusiSPL(n);
+        sol = solusiSPL(SPL);
         Matrix v = vektorRegresi(sol);
-        v.displayMatrix();
-        ans = persamaanRegresi(sol);
+        // v.displayMatrix();
+        ans = persamaanRegresi(sol, yRegresi(Xk, v));
         System.out.println(ans);
     }
 }
