@@ -1,5 +1,7 @@
 package src;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.util.Scanner;
 
 public class Interpolasi {
@@ -96,5 +98,59 @@ public class Interpolasi {
             }
         }
         return result;
+    }
+
+    public static void main(String[] args) {
+        System.out.println("=== Pilihan Masukan ===");
+        System.out.println("1. Keyboard");
+        System.out.println("2. File");
+        int Masukan;
+        do {
+            System.out.print("pilihan (1/2): ");
+            Masukan = input.nextInt();
+        } while (Masukan != 1 && Masukan != 2);
+
+        Matrix m;
+        double x;
+        if (Masukan == 1) {
+            m = readmPointKeyboard();
+            System.out.print("Masukkan nilai yang akan ditaksir (x): ");
+            x = input.nextDouble();
+        } else {
+            String fileName = input.nextLine();
+            IO f = new IO(fileName);
+            m = f.readPointFromFile();
+            // x = x from file;
+        }
+
+        double[] koef = getKoefPolinomial(m);
+        String equation = persamaanInterpolasi(koef);
+        double range = getRangeInterpolasi(koef, x);
+        String output = equation + ", f(" + x + ") = " + range;
+        System.out.println(output);
+        
+        System.out.println();
+        System.out.println("=== Apakah Anda ingin menyimpan hasil ke dalam file? ===");
+        System.out.println("1. Ya");
+        System.out.println("2. Tidak");
+
+        int isSave;
+        do {
+            isSave = input.nextInt();
+        } while (isSave != 1 && isSave != 2);
+
+        if (isSave == 1) {
+            try {
+                String fileSave = input.nextLine();
+                File file = new File(fileSave);
+                file.createNewFile();
+                FileWriter write = new FileWriter(fileSave);
+                write.write(output);
+                write.close();
+            } catch (Exception e) {
+                System.out.println("error");
+                // TODO: handle exception
+            }
+        }
     }
 }
