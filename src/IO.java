@@ -35,6 +35,27 @@ public class IO {
     }
 
     // Read File
+    public static String readfileName() {
+        Scanner sc;
+        scan = new Scanner(System.in);
+        String fileName = "";
+        while (true) {
+            try {
+                System.out.print(">> Enter input file name: ");
+                fileName = scan.nextLine();
+                File file = new File("test/" + fileName);
+                sc = new Scanner(file);
+                break;
+
+            } catch (FileNotFoundException e) {
+                System.out.println(">> There is no file with name " + fileName);
+            }
+        }
+        // scan.close();
+        sc.close();
+        return "test/" + fileName;
+    }
+
     public int getRow() {
         int cnt = 0;
         openFile();
@@ -113,24 +134,21 @@ public class IO {
         }
     }
 
-    public static String readfileName() {
-        Scanner sc;
-        scan = new Scanner(System.in);
-        String fileName = "";
-        while (true) {
-            try {
-                System.out.print(">> Enter input file name: ");
-                fileName = scan.nextLine();
-                File file = new File("test/" + fileName);
-                sc = new Scanner(file);
-                break;
-
-            } catch (FileNotFoundException e) {
-                System.out.println(">> There is no file with name " + fileName);
+    public void writeStringToFile(String[] res) {
+        try {
+            System.out.print(">> Enter output file name: ");
+            String namaFile = scan.nextLine();
+            namaFile = "test/" + namaFile;
+            File file = new File(namaFile);
+            file.createNewFile();
+            FileWriter write = new FileWriter(namaFile);
+            for (int i = 0; i < res.length; i++){
+                write.write(res[i] + "\n");
             }
+            write.close();
+        } catch (Exception e) {
+            System.out.println("error");
+            // TODO: handle exception
         }
-        // scan.close();
-        sc.close();
-        return "test/" + fileName;
     }
 }
