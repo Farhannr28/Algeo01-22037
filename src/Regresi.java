@@ -41,7 +41,7 @@ public class Regresi {
         double a;
         Matrix taksir = new Matrix(1, m.getCol() - 1);
         taksir.Mat[0][0] = 1;
-        System.out.print("Masukkan nilai-nilai yang ingin ditaksir hasil fungsinya (xk): ");
+        System.out.print(">> Masukkan nilai-nilai yang ingin ditaksir hasil fungsinya (xk): ");
         for (int i = 1; i < taksir.getCol(); i++) {
             a = input.nextDouble();
             taksir.Mat[0][i] = a;
@@ -159,7 +159,9 @@ public class Regresi {
                         }
                     } else {
                         ans = ans + " + ";
+
                         if (!num.equals("1.0 ")) {
+
                             ans = ans + num;
                         }
                     }
@@ -186,22 +188,3 @@ public class Regresi {
         res[0] = ans;
     }
 }
-
-/*
- * 1.0 1.0 1.0 0.0 3.0
- * 1.0 1.0 0.0 1.0 4.0
- * 1.0 0.0 1.0 1.0 5.0
- * 
- * 1.0 1.0 1.0
- * 1.0 1.0 0.0
- * 1.0 0.0 1.0
- * 0.0 1.0 1.0
- * 3.0 4.0 5.0
- * 
- * 3.0 2.0 2.0 2.0 12.0
- * 2.0 2.0 1.0 1.0 7.0
- * 2.0 1.0 2.0 1.0 8.0
- * 2.0 1.0 1.0 2.0 9.0
- * 
- * 4 - X1 + X3
- */

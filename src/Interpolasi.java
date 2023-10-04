@@ -13,6 +13,7 @@ public class Interpolasi {
     {
         // Input derajat polinomial
         int n;
+
         System.out.print(">> Masukkan derajat polinom(n): ");
         n = input.nextInt();
 
@@ -68,6 +69,7 @@ public class Interpolasi {
                 if (koef[i] > 0) {
                     if (exist > 0) {
                         result += "+ ";
+
                     }
                     if (koef[i] == 1) {
                         if (i != 1)
@@ -113,6 +115,7 @@ public class Interpolasi {
     }
 
     public static void main(String[] args) {
+
         IO f = new IO("");
         System.out.println(">> Pilih tipe masukan");
         System.out.println(">> 1. Keyboard");
