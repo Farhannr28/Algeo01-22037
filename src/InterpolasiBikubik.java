@@ -30,7 +30,7 @@ public class InterpolasiBikubik {
 
         // Inverse X and multiply with M
         invX.copyMatrix(X);
-        boolean isInvertible = invX.InversWithGaussJordan();
+        boolean isInvertible = Matrix.InversWithGaussJordan(invX);
         res = Matrix.multiplyMatrix(invX, M);
 
         // solve for x and y
@@ -41,15 +41,15 @@ public class InterpolasiBikubik {
                 idx++;
             }
         }
-        System.out.println(">> Output Format");
-        System.out.println(">> 1. Terminal Screen");
-        System.out.println(">> 2. Save to file");
-        System.out.print(">> Enter choice: ");
+        System.out.println();
+        System.out.println("f(" + askX + "," + askY + ") = " + askRes);
+        System.out.println();
+        System.out.println(">> Apakah ingin menyimpan keluaran?");
+        System.out.println(">> 1. Ya");
+        System.out.println(">> 2. Tidak");
+        System.out.print(">> Masukkan pilihan: ");
         int choice = IO.iinput.nextInt();
         if (choice == 1){
-            System.out.println("f(" + askX + "," + askY + ") = " + askRes);
-        }
-        else{
             String passString = "f(" + askX + "," + askY + ") = " + askRes;
             f.writeBicubicSpline(passString);
         }

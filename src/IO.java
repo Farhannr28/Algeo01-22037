@@ -25,7 +25,7 @@ public class IO {
             File file = new File(getFileName());
             this.sc = new Scanner(file);
         } catch (FileNotFoundException e) {
-            System.out.println(">> There is no file with name " + getFileName());
+            System.out.println(">> Tidak ada file dengan nama " + getFileName());
             System.exit(0);
         }
     }
@@ -41,14 +41,14 @@ public class IO {
         String fileName = "";
         while (true) {
             try {
-                System.out.print(">> Enter input file name: ");
+                System.out.print(">> Masukkan nama file: ");
                 fileName = scan.nextLine();
                 File file = new File("test/" + fileName);
                 sc = new Scanner(file);
                 break;
 
             } catch (FileNotFoundException e) {
-                System.out.println(">> There is no file with name " + fileName);
+                System.out.println(">> Tidak ada file dengan nama " + fileName);
             }
         }
         // scan.close();
@@ -98,11 +98,12 @@ public class IO {
         int row = getRow();
         Matrix res = new Matrix(row, 2);
         openFile();
-        for (int i = 0; i < row; i++) {
+        for (int i = 0; i < row - 1; i++) {
             for (int j = 0; j < 2; j++) {
                 res.setElmt(i, j, sc.nextDouble());
             }
         }
+        res.setElmt(row - 1, 0, sc.nextDouble());
         closeFile();
         return res;
     }
@@ -120,7 +121,7 @@ public class IO {
     // Write
     public void writeBicubicSpline(String res) {
         try {
-            System.out.print(">> Enter output file name: ");
+            System.out.print(">> Masukkan nama file keluaran: ");
             String namaFile = scan.nextLine();
             namaFile = "test/" + namaFile;
             File file = new File(namaFile);
@@ -136,14 +137,17 @@ public class IO {
 
     public void writeStringToFile(String[] res) {
         try {
-            System.out.print(">> Enter output file name: ");
+            System.out.print(">> Masukkan nama file keluaran: ");
             String namaFile = scan.nextLine();
             namaFile = "test/" + namaFile;
             File file = new File(namaFile);
             file.createNewFile();
             FileWriter write = new FileWriter(namaFile);
             for (int i = 0; i < res.length; i++){
-                write.write(res[i] + "\n");
+                write.write(res[i]);
+                if (i != res.length - 1){
+                    write.write("\n");
+                }
             }
             write.close();
         } catch (Exception e) {

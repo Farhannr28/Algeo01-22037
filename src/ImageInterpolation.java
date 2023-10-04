@@ -24,7 +24,7 @@ public class ImageInterpolation {
 
         // inverse matrix and save it to inverseX
         inverseX.copyMatrix(X);
-        inverseX.InversWithGaussJordan();
+        Matrix.InversWithGaussJordan(inverseX);
 
         // multiply X and D and save it to multiplier
         multiplier = Matrix.multiplyMatrix(inverseX, D);
@@ -137,7 +137,7 @@ public class ImageInterpolation {
                 blueRes[i - 1][j - 1] = Matrix.multiplyMatrix(multiplier, tempBlue);
             }
         }
-        System.out.print(">> Enter upscale of your image: ");
+        System.out.print(">> Masukkan perbesaran gambar: ");
         double k = IO.input.nextDouble();
 
         long newHeight = Math.round(k * img.getHeight());
@@ -178,7 +178,7 @@ public class ImageInterpolation {
             }
         }
         try {
-            System.out.print(">> Enter output file name: ");
+            System.out.print(">> Masukkan nama file keluaran: ");
             String outputFileName = IO.scan.nextLine();
             File outputImg = new File("test/" + outputFileName);
             ImageIO.write(newImage, "png", outputImg);

@@ -7,6 +7,80 @@ public class Main {
     static Scanner input = new Scanner(System.in); // integer
     static Scanner scan = new Scanner(System.in); // string
 
+    public static void startingLoading() throws InterruptedException, IOException {
+        String bar10 = "█▒▒▒▒▒▒▒▒▒ 10%";
+        String bar20 = "██▒▒▒▒▒▒▒▒ 20%";
+        String bar30 = "███▒▒▒▒▒▒▒ 30%";
+        String bar40 = "████▒▒▒▒▒▒ 40%";
+        String bar50 = "█████▒▒▒▒▒ 50%";
+        String bar60 = "██████▒▒▒▒ 60%";
+        String bar70 = "███████▒▒▒ 70%";
+        String bar80 = "████████▒▒ 80%";
+        String bar90 = "█████████▒ 90%";
+        String bar100 = "██████████ 100%";
+        clearScreen();
+        System.out.print("""
+                Initialization begin...
+                █▒▒▒▒▒▒▒▒▒ 10%
+                    """);
+        Thread.sleep(300);
+        clearScreen();
+        System.out.print("""
+                Initialization begin...
+                ██▒▒▒▒▒▒▒▒ 20%
+                    """);
+        Thread.sleep(300);
+        clearScreen();
+        System.out.print("""
+                Initialization begin...
+                ███▒▒▒▒▒▒▒ 30%
+                    """);
+        Thread.sleep(300);
+        clearScreen();
+        System.out.print("""
+                Initialization begin...
+                ████▒▒▒▒▒▒ 40%
+                    """);
+        Thread.sleep(300);
+        clearScreen();
+        System.out.print("""
+                Initialization begin...
+                █████▒▒▒▒▒ 50%
+                    """);
+        Thread.sleep(300);
+        clearScreen();
+        System.out.print("""
+                Initialization begin...
+                ██████▒▒▒▒ 60%
+                    """);
+        Thread.sleep(300);
+        clearScreen();
+        System.out.print("""
+                Initialization begin...
+                ███████▒▒▒ 70%
+                    """);
+        Thread.sleep(300);
+        clearScreen();
+        System.out.print("""
+                Initialization begin...
+                ████████▒▒ 80%
+                    """);
+        Thread.sleep(300);
+        clearScreen();
+        System.out.print("""
+                Initialization begin...
+                █████████▒ 90%
+                    """);
+        Thread.sleep(300);
+        clearScreen();
+        System.out.print("""
+                Initialization begin...
+                ██████████ 100%
+                    """);
+        Thread.sleep(300);
+        clearScreen();
+    }
+
     public static String opening = """
 
             =======================================================================================================================================
@@ -48,7 +122,7 @@ public class Main {
 
     public static void printInputType() {
         System.out.print("""
-                >> Choose Input Type
+                >> Pilih tipe masukan
                 >> 1. Keyboard
                 >> 2. File
                 """);
@@ -56,7 +130,7 @@ public class Main {
 
     public static void printSPLChoice() {
         System.out.print("""
-                >> Choose Method
+                >> Pilih metode
                 >> 1. Metode Eliminasi Gausss
                 >> 2. Metode Eliminasi Gauss-Jordan
                 >> 3. Metode Matriks Balikan
@@ -66,7 +140,7 @@ public class Main {
 
     public static void printDeterminantChoice() {
         System.out.print("""
-                >> Choose Method
+                >> Pilih metode
                 >> 1. Metode Ekpansi Kofaktor
                 >> 2. Metode OBE
                 """);
@@ -74,14 +148,14 @@ public class Main {
 
     public static void printInverseChoice() {
         System.out.print("""
-                >> Choose Method
+                >> Pilih metode
                 >> 1. Metode Gauss-Jordan
                 >> 2. Metode Adjoin
                 """);
     }
 
     public static void printEnterChoice() {
-        System.out.print(">> Enter choice: ");
+        System.out.print(">> Masukkan pilihan: ");
     }
 
     public static void pressEnterToContinue() {
@@ -91,9 +165,9 @@ public class Main {
 
     public static void printOutputChoice() {
         System.out.print("""
-                >> Choose Output Type
-                >> 1. Terminal
-                >> 2. Save to file
+                >> Apakah ingin menyimpan hasil?
+                >> 1. Ya
+                >> 2. Tidak
                 """);
     }
 
@@ -114,6 +188,7 @@ public class Main {
         double det;
         IO io = new IO("");
         Matrix m;
+        startingLoading();
         while (run) {
             clearScreen();
             printOpening();
@@ -137,12 +212,12 @@ public class Main {
                         inputType = input.nextInt();
                         System.out.println("");
                         if (inputType == 1) {
-                            System.out.print(">> Enter number of row: ");
+                            System.out.print(">> Masukkan jumlah baris: ");
                             row = input.nextInt();
-                            System.out.print(">> Enter number of column: ");
+                            System.out.print(">> Masukkan jumlah kolom: ");
                             col = input.nextInt();
                             m = new Matrix(row, col);
-                            System.out.println(">> Enter Matrix");
+                            System.out.println(">> Masukkan matrix");
                             m.readMatrix();
                             System.out.println("");
                         } else {
@@ -163,17 +238,19 @@ public class Main {
                             case 3 -> {
                                 if (m.getRow() != m.getCol() - 1) {
                                     res = new String[1];
-                                    res[0] = "Inverse method failed because the matrix is not square";
+                                    res[0] = "Metode balikan gagal karena matrix tidak persegi (n x n)";
                                 } else {
                                     det = Matrix.determinantWithCofactor(Matrix.getCoefficient(m));
                                     if (det == 0) {
                                         res = new String[1];
-                                        res[0] = "Inverse method failed because the matrix' determinant is 0";
+                                        res[0] = "Metode balikan gagal karena determinan matrix 0";
                                     } else {
                                         temp = SPL.metodeBalikan(m);
                                         res = new String[m.getRow()];
                                         for (int i = 0; i < temp.getRow(); i++) {
-                                            res[i] = Double.toString(temp.getElmt(i, 0));
+                                            res[i] = "X" + (i + 1) + " = ";
+                                            // res[i] += Double.toString(temp.getElmt(i, 0));
+                                            res[i] += String.format("%.5f", temp.getElmt(i, 0));
                                         }
                                     }
                                 }
@@ -182,32 +259,32 @@ public class Main {
                             default -> {
                                 if (m.getRow() != m.getCol() - 1) {
                                     res = new String[1];
-                                    res[0] = "Cramer's rule failed because the matrix is not square";
+                                    res[0] = "Kaidah cramer gagal karena matrix tidak persegi (n x n)";
                                 } else {
                                     det = Matrix.determinantWithCofactor(Matrix.getCoefficient(m));
                                     if (det == 0) {
                                         res = new String[1];
-                                        res[0] = "Cramer's rule failed because the matrix' determinant is 0";
+                                        res[0] = "Kaidah cramer gagal karena determinan matrix 0";
                                     } else {
                                         temp = SPL.cramer(m);
                                         res = new String[m.getRow()];
                                         for (int i = 0; i < temp.getRow(); i++) {
-                                            res[i] = Double.toString(temp.getElmt(i, 0));
+                                            res[i] = "X" + (i + 1) + " = ";
+                                            res[i] += String.format("%.5f", temp.getElmt(i, 0));
                                         }
                                     }
                                 }
                                 break;
                             }
                         }
+                        for (int i = 0; i < res.length; i++) {
+                            System.out.println(res[i]);
+                        }
+                        System.out.println();
                         printOutputChoice();
                         printEnterChoice();
                         outputType = input.nextInt();
-                        System.out.println("");
                         if (outputType == 1) {
-                            for (int i = 0; i < res.length; i++) {
-                                System.out.println(res[i]);
-                            }
-                        } else {
                             io.writeStringToFile(res);
                         }
                         pressEnterToContinue();
@@ -230,12 +307,12 @@ public class Main {
                         inputType = input.nextInt();
                         System.out.println("");
                         if (inputType == 1) {
-                            System.out.print(">> Enter number of row: ");
+                            System.out.print(">> Masukkan jumlah baris: ");
                             row = input.nextInt();
-                            System.out.print(">> Enter number of column: ");
+                            System.out.print(">> Masukkan jumlah kolom: ");
                             col = input.nextInt();
                             m = new Matrix(row, col);
-                            System.out.println(">> Enter Matrix");
+                            System.out.println(">> Masukkan matrix");
                             m.readMatrix();
                             System.out.println("");
                         } else {
@@ -247,29 +324,30 @@ public class Main {
                         if (choice == 1) {
                             if (m.getRow() != m.getCol()) {
                                 res = new String[1];
-                                res[0] = "Determinant undefined because the matrix is not square";
+                                res[0] = "Determinan tidak terdefinisi karena matrix bukan persegi (n x n)";
                             } else {
                                 res = new String[1];
-                                res[0] = Double.toString(Matrix.determinantWithCofactor(m));
+                                res[0] = String.format("%.5f", Matrix.determinantWithCofactor(m));
+                                // res[0] = Double.toString(Matrix.determinantWithCofactor(m));
                             }
                         } else {
                             if (m.getRow() != m.getCol()) {
                                 res = new String[1];
-                                res[0] = "Determinant undefined because the matrix is not square";
+                                res[0] = "Determinan tidak terdefinisi karena matrix bukan persegi (n x n)";
                             } else {
                                 res = new String[1];
-                                res[0] = Double.toString(Matrix.determinantWithOBE(m));
+                                res[0] = String.format("%.5f", Matrix.determinantWithOBE(m));
+                                // res[0] = Double.toString(Matrix.determinantWithOBE(m));
                             }
                         }
+                        for (int i = 0; i < res.length; i++) {
+                            System.out.println(res[i]);
+                        }
+                        System.out.println();
                         printOutputChoice();
                         printEnterChoice();
                         outputType = input.nextInt();
-                        System.out.println("");
                         if (outputType == 1) {
-                            for (int i = 0; i < res.length; i++) {
-                                System.out.println(res[i]);
-                            }
-                        } else {
                             io.writeStringToFile(res);
                         }
                         pressEnterToContinue();
@@ -292,12 +370,12 @@ public class Main {
                         inputType = input.nextInt();
                         System.out.println("");
                         if (inputType == 1) {
-                            System.out.print(">> Enter number of row: ");
+                            System.out.print(">> Masukkan banyak baris: ");
                             row = input.nextInt();
-                            System.out.print(">> Enter number of column: ");
+                            System.out.print(">> Masukkan banyak kolom: ");
                             col = input.nextInt();
                             m = new Matrix(row, col);
-                            System.out.println(">> Enter Matrix");
+                            System.out.println(">> Masukkan matrix: ");
                             m.readMatrix();
                             System.out.println("");
                         } else {
@@ -309,14 +387,14 @@ public class Main {
                         if (choice == 1) {
                             if (m.getRow() != m.getCol()) {
                                 res = new String[1];
-                                res[0] = "Inverse matrix undefined because the matrix is not square";
+                                res[0] = "Matrix balikan tidak terdefinisi karena bukan persegi (n x n)";
                             } else {
                                 det = Matrix.determinantWithCofactor(m);
                                 if (det == 0) {
                                     res = new String[1];
-                                    res[0] = "Inverse matrix undefined because the matrix' determinant is 0";
+                                    res[0] = "Matrix balikan tidak terdefinisi karena determinan 0";
                                 } else {
-                                    m.InversWithGaussJordan();
+                                    Matrix.InversWithGaussJordan(m);
                                     res = new String[m.getRow()];
                                     for (int i = 0; i < m.getRow(); i++) {
                                         res[i] = "";
@@ -331,12 +409,12 @@ public class Main {
                         } else {
                             if (m.getRow() != m.getCol()) {
                                 res = new String[1];
-                                res[0] = "Inverse matrix undefined because the matrix is not square";
+                                res[0] = "Matrix balikan tidak terdefinisi karena bukan persegi (n x n)";
                             } else {
                                 det = Matrix.determinantWithCofactor(m);
                                 if (det == 0) {
                                     res = new String[1];
-                                    res[0] = "Inverse matrix undefined because the matrix' determinant is 0";
+                                    res[0] = "Matrix balikan tidak terdefinisi karena determinan 0";
                                 } else {
                                     Matrix.InversWithCofactor(m);
                                     res = new String[m.getRow()];
@@ -351,36 +429,49 @@ public class Main {
                                 }
                             }
                         }
+                        for (int i = 0; i < res.length; i++) {
+                            System.out.println(res[i]);
+                        }
+                        System.out.println();
                         printOutputChoice();
                         printEnterChoice();
                         outputType = input.nextInt();
-                        System.out.println("");
                         if (outputType == 1) {
-                            for (int i = 0; i < res.length; i++) {
-                                System.out.println(res[i]);
-                            }
-                        } else {
                             io.writeStringToFile(res);
                         }
                         pressEnterToContinue();
                     }
                     break;
                 }
-                case 5->{
+                case 4 -> {
+                    clearScreen();
+                    printOpening();
+                    Interpolasi.main(args);
+                    pressEnterToContinue();
+                    break;
+                }
+                case 5 -> {
                     clearScreen();
                     printOpening();
                     InterpolasiBikubik.main(args);
                     pressEnterToContinue();
                     break;
                 }
-                case 7->{
+                case 6 -> {
+                    clearScreen();
+                    printOpening();
+                    InterpolasiBikubik.main(args);
+                    pressEnterToContinue();
+                    break;
+                }
+                case 7 -> {
                     clearScreen();
                     printOpening();
                     ImageInterpolation.main(args);
                     pressEnterToContinue();
                     break;
                 }
-                case 8->{
+                case 8 -> {
                     run = false;
                 }
                 default -> {
