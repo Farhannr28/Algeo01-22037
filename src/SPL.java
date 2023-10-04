@@ -9,7 +9,7 @@ public class SPL {
         for (int i = 0; i < m.getCol() - 1; i++) {
             coef = Matrix.getCoefficient(m);
             for (int j = 0; j < m.getRow(); j++) {
-                coef.setElmt(j, i, m.getElmt(j, m.col - 1));
+                coef.setElmt(j, i, m.getElmt(j, m.getCol() - 1));
             }
             res.setElmt(i, 0, Matrix.determinantWithCofactor(coef) / coefDet);
         }
@@ -32,9 +32,20 @@ public class SPL {
         return Sol_exist;
     }
 
+    public static boolean isHasilHomogen(Matrix m) {
+        // Mengirimkan true jika hasil spl adalah homogen
+        boolean ans;
+        ans = true;
+        for (int i = 0; i < m.getRow(); i++) {
+            if (m.getElmt(i, 0) != 0) {
+                ans = false;
+            }
+        }
+        return ans;
+    }
+
     public static boolean isParametrikSolution(Matrix m, int col)
     // Mengirim true jika pada suatu kolom matriks tidak ada yang jadi leading one
-    // baris
     {
         double nZero;
         int idx;
@@ -58,8 +69,6 @@ public class SPL {
         String[] Solution;
         if (isSolExist(m)) // SPL memiliki solusi
         {
-            char[] Parametrik = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q',
-                    'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' }; // karakter untuk solusi tidak tunggal
             Matrix Row_Temp;
             Solution = new String[m.getlastColIdx()];
             Row_Temp = new Matrix(m.getRow(), m.getCol());
@@ -114,35 +123,34 @@ public class SPL {
                     } else {
                         Solution[idx_col] = "X" + (idx_col + 1) + " = " + Row_Temp.getElmt(i, m.getlastColIdx()) + " ";
                     }
-
+                    int exist = 0;
                     for (k = idx_col + 1; k < m.getlastColIdx(); k++) {
                         if (isParametrikSolution(m, k)) {
                             if (Solution[k] == null) {
-                                Solution[k] = "X" + (k + 1) + " = " + Parametrik[k - 1] + ", dengan "
-                                        + Parametrik[k - 1] + " bilangan Real.";
+                                Solution[k] = "X" + (k + 1) + " = " + "t" + (k + 1) + ", dengan " + "t" + (k + 1)
+                                        + " bilangan Real.";
                             }
 
                             if (Row_Temp.getElmt(i, k) != 0) {
                                 if (Row_Temp.getElmt(i, k) < 0) {
-                                    if (Row_Temp.getElmt(i, Row_Temp.getlastColIdx()) != 0) {
+                                    if (Row_Temp.getElmt(i, Row_Temp.getlastColIdx()) != 0 || exist > 0) {
                                         Solution[idx_col] += "+ ";
                                     }
 
                                     if (Row_Temp.getElmt(i, k) != -1) {
-                                        Solution[idx_col] += (-1) * Row_Temp.getElmt(i, k) + " " + Parametrik[k - 1]
-                                                + " ";
+                                        Solution[idx_col] += (-1) * Row_Temp.getElmt(i, k) + " " + "t" + (k + 1) + " ";
                                     } else { // Row_Temp.getElmt(i, k) == -1
-                                        Solution[idx_col] += Parametrik[k - 1] + " ";
+                                        Solution[idx_col] += "t" + (k + 1) + " ";
                                     }
 
                                 } else {
                                     if (Row_Temp.getElmt(i, k) != 1) {
-                                        Solution[idx_col] += "- " + Row_Temp.getElmt(i, k) + " " + Parametrik[k - 1]
-                                                + " ";
+                                        Solution[idx_col] += "- " + Row_Temp.getElmt(i, k) + " " + "t" + (k + 1) + " ";
                                     } else { // Row_Temp.getElmt(i, k) == 1
-                                        Solution[idx_col] += "- " + Parametrik[k - 1] + " ";
+                                        Solution[idx_col] += "- " + "t" + (k + 1) + " ";
                                     }
                                 }
+                                exist++;
                             }
                         }
                     }
@@ -153,7 +161,7 @@ public class SPL {
                 // handling kasus solusi tidak tunggal dalam parametrik yang belum terassign
                 // karena index di luar looping
                 if (Solution[i] == null) {
-                    Solution[i] = "X" + (i + 1) + " = " + Parametrik[i] + ", dengan " + Parametrik[i]
+                    Solution[i] = "X" + (i + 1) + " = " + "t" + (i + 1) + ", dengan " + "t" + (i + 1)
                             + " bilangan Real.";
                 }
             }
@@ -171,8 +179,6 @@ public class SPL {
 
         String[] Solution;
         if (isSolExist(m)) {
-            char[] Parametrik = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q',
-                    'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' }; // karakter untuk solusi tidak tunggal
             Solution = new String[m.getlastColIdx()];
 
             int i = 0;
@@ -198,32 +204,34 @@ public class SPL {
                         Solution[idx_col] = "X" + (idx_col + 1) + " = " + m.getElmt(i, m.getlastColIdx()) + " ";
                     }
 
+                    int exist = 0;
                     int j;
                     for (j = idx_col + 1; j < m.getlastColIdx(); j++) {
                         if (m.getElmt(i, j) != 0 && isParametrikSolution(m, j)) {
                             if (Solution[j] == null) {
-                                Solution[j] = "X" + (j + 1) + " = " + Parametrik[j - 1] + ", dengan "
-                                        + Parametrik[j - 1] + " bilangan Real.";
+                                Solution[j] = "X" + (j + 1) + " = " + "t" + (j + 1) + ", dengan " + "t" + (j + 1)
+                                        + " bilangan Real.";
                             }
 
                             if (m.getElmt(i, j) < 0) {
-                                if (m.getElmt(i, m.getlastColIdx()) != 0) {
+                                if (m.getElmt(i, m.getlastColIdx()) != 0 || exist > 0) {
                                     Solution[idx_col] += "+ ";
                                 }
 
                                 if (m.getElmt(i, j) != -1) {
-                                    Solution[idx_col] += (-1) * m.getElmt(i, j) + " " + Parametrik[j - 1] + " ";
+                                    Solution[idx_col] += (-1) * m.getElmt(i, j) + " " + "t" + (j + 1) + " ";
                                 } else { // m.getElmt(i, j) == -1
-                                    Solution[idx_col] += Parametrik[j - 1] + " ";
+                                    Solution[idx_col] += "t" + (j + 1) + " ";
                                 }
 
                             } else {
                                 if (m.getElmt(i, j) != 1) {
-                                    Solution[idx_col] += "- " + m.getElmt(i, j) + " " + Parametrik[j - 1] + " ";
+                                    Solution[idx_col] += "- " + m.getElmt(i, j) + " " + "t" + (j + 1) + " ";
                                 } else { // m.getElmt(i, j) == 1
-                                    Solution[idx_col] += "- " + Parametrik[j - 1] + " ";
+                                    Solution[idx_col] += "- " + "t" + (j + 1) + " ";
                                 }
                             }
+                            exist++;
                         }
                     }
                 }
@@ -234,7 +242,7 @@ public class SPL {
                 // handling kasus solusi tidak tunggal dalam parametrik yang belum terassign
                 // karena index di luar looping
                 if (Solution[i] == null) {
-                    Solution[i] = "X" + (i + 1) + " = " + Parametrik[i] + ", dengan " + Parametrik[i]
+                    Solution[i] = "X" + (i + 1) + " = " + "t" + (i + 1) + ", dengan " + "t" + (i + 1)
                             + " bilangan Real.";
                 }
             }
@@ -243,5 +251,29 @@ public class SPL {
             Solution[0] = "Sistem persamaan linear tidak memiliki solusi";
         }
         return Solution;
+    }
+
+    public static Matrix metodeBalikan(Matrix m) {
+        Matrix ans = new Matrix(m.getRow(), 1);
+        Matrix b = new Matrix(m.getRow(), 1);
+        Matrix a = new Matrix(m.getRow(), m.getCol() - 1);
+        a = Matrix.getCoefficient(m);
+        for (int i = 0; i < m.getRow(); i++) {
+            b.Mat[i][0] = m.Mat[i][m.getCol() - 1];
+        }
+        if (isHasilHomogen(b)) {
+            if (Matrix.InversWithCofactor(a)) {
+                for (int i = 0; i < m.getRow(); i++) {
+                    ans.Mat[i][0] = 0;
+                }
+            }
+            // else tidak dapat menggunakan balikan
+        } else {
+            if (Matrix.InversWithCofactor(a)) {
+                ans = Matrix.multiplyMatrix(a, b);
+            }
+            // else tidak dapat menggunakan balikan
+        }
+        return ans;
     }
 }

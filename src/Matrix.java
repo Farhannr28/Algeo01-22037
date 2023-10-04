@@ -252,9 +252,9 @@ public class Matrix {
     }
 
     public static Matrix getCoefficient(Matrix m) {
-        Matrix res = new Matrix(m.row, m.col - 1);
-        for (int i = 0; i < res.row; i++) {
-            for (int j = 0; j < res.col; j++) {
+        Matrix res = new Matrix(m.getRow(), m.getCol() - 1);
+        for (int i = 0; i < res.getRow(); i++) {
+            for (int j = 0; j < res.getCol(); j++) {
                 res.Mat[i][j] = m.Mat[i][j];
             }
         }
@@ -319,7 +319,7 @@ public class Matrix {
             cnt += m1.sortRowZero();
         }
         m1.negatedZero();
-        for (int i = 0; i < m1.row; i++) {
+        for (int i = 0; i < m1.getRow(); i++) {
             res *= m1.getElmt(i, i);
         }
         if (res == -0.0 || res == 0){
@@ -342,26 +342,26 @@ public class Matrix {
         }
     }
 
-    public void transpose(){
+    public static Matrix transpose(Matrix m){
     // Mentranspose Matrix
-        Matrix temp = new Matrix(getRow(), getCol());
-        for (int i=0; i<getRow(); i++){
-            for (int j=0; j<getCol(); j++){
-                temp.Mat[i][j] = getElmt(j,i);
+        Matrix temp = new Matrix(m.getCol(), m.getRow());
+        for (int i=0; i<m.getCol(); i++){
+            for (int j=0; j<m.getRow(); j++){
+                temp.Mat[i][j] = m.getElmt(j,i);
             }
         }
-        this.copyMatrix(temp);
+        return temp;
     }
 
     public static Matrix multiplyMatrix(Matrix M1, Matrix M2){
     // Mengeluarkan Matrix MxN yang merupakan hasil perkalian Matrix MxK dengan KxN
         Matrix ans = new Matrix(M1.getRow(), M2.getCol());
-        int temp;
+        double temp;
         for (int i=0; i<M1.getRow(); i++){
             for (int j=0; j<M2.getCol(); j++){
                 temp = 0;
                 for (int k=0; k<M1.getCol(); k++){
-                    temp += (M1.Mat[i][k] * M2.Mat[k][j]);
+                    temp = temp + (M1.Mat[i][k] * M2.Mat[k][j]);
                 }
                 ans.Mat[i][j] = temp;
             }
@@ -473,10 +473,10 @@ public class Matrix {
         return m;
     }
 
-    public boolean InversWithGaussJordan(){
+    public static boolean InversWithGaussJordan(Matrix m){
         // Mengembalikan True jika Invers berhasil
-        Matrix Invers = new Matrix(getRow(), getCol());
-        Invers.copyMatrix(this);
+        Matrix Invers = new Matrix(m.getRow(), m.getCol());
+        Invers.copyMatrix(m);
         if (determinantWithOBE(Invers)==0.0){
             // Gagal di invers karena determinannya 0
             return false;
@@ -485,16 +485,16 @@ public class Matrix {
             // Invers dari identitas adalah dirinya sendiri
             return true;
         }
-        Matrix Identity = getIdentityMatrix(this.getRow());
-        Invers = this.getEselonTereduksiInvers(Identity);
-        this.copyMatrix(Invers);
+        Matrix Identity = getIdentityMatrix(m.getRow());
+        Invers = m.getEselonTereduksiInvers(Identity);
+        m.copyMatrix(Invers);
         return true; 
     }
 
-    public boolean InversWithCofactor(){
+    public static boolean InversWithCofactor(Matrix m){
         // Mengembalikan True jika Invers berhasil
-        Matrix Invers = new Matrix(getRow(), getCol());
-        Invers.copyMatrix(this);
+        Matrix Invers = new Matrix(m.getRow(), m.getCol());
+        Invers.copyMatrix(m);
         double det = determinantWithCofactor(Invers);
         if (det==0.0){
             // Gagal di invers karena determinannya 0
@@ -504,22 +504,23 @@ public class Matrix {
             // Invers dari identitas adalah dirinya sendiri
             return true;
         }
-        for (int i=0; i<getRow(); i++){
-            for (int j=0; j<getCol(); j++){
-                Invers.Mat[i][j] = determinantWithCofactor(minor(this,i,j));
+        for (int i=0; i<m.getRow(); i++){
+            for (int j=0; j<m.getCol(); j++){
+                Invers.Mat[i][j] = determinantWithCofactor(minor(m,i,j));
                 if ((i+j) % 2 != 0){
                     Invers.Mat[i][j] = 0 - Invers.Mat[i][j];
                 }
             }
         }
-        Invers.transpose();
-        for (int i=0; i<getRow(); i++){
-            for (int j=0; j<getCol(); j++){
-                Invers.Mat[i][j] /= det;
+        Matrix tr = new Matrix(m.getRow(), m.getCol());
+        tr = transpose(Invers);
+        for (int i=0; i<m.getRow(); i++){
+            for (int j=0; j<m.getCol(); j++){
+                tr.Mat[i][j] /= det;
             }
         }
-        Invers.negatedZero();
-        this.copyMatrix(Invers);
+        tr.negatedZero();
+        m.copyMatrix(tr);
         return true; 
     }
 }
