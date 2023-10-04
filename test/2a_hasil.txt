@@ -1,0 +1,4 @@
+X1 = -1.0 + t4 
+X2 = 2.0 t3 
+X3 = t3, dengan t3 bilangan Real.
+X4 = t4, dengan t4 bilangan Real.

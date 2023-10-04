@@ -306,7 +306,6 @@ public class Matrix {
         int cnt = 0;
         double res = 1;
         cnt += m1.sortRowZero();
-        System.out.println();
         for (int i = 0; i < m1.row; i++) {
             int firstNonZeroIdx = m1.findIdxNotZero(i);
             for (int j = i + 1; j < m1.row; j++) {
@@ -474,10 +473,10 @@ public class Matrix {
         return m;
     }
 
-    public boolean InversWithGaussJordan(){
+    public static boolean InversWithGaussJordan(Matrix m){
         // Mengembalikan True jika Invers berhasil
-        Matrix Invers = new Matrix(getRow(), getCol());
-        Invers.copyMatrix(this);
+        Matrix Invers = new Matrix(m.getRow(), m.getCol());
+        Invers.copyMatrix(m);
         if (determinantWithOBE(Invers)==0.0){
             // Gagal di invers karena determinannya 0
             return false;
@@ -486,9 +485,9 @@ public class Matrix {
             // Invers dari identitas adalah dirinya sendiri
             return true;
         }
-        Matrix Identity = getIdentityMatrix(this.getRow());
-        Invers = this.getEselonTereduksiInvers(Identity);
-        this.copyMatrix(Invers);
+        Matrix Identity = getIdentityMatrix(m.getRow());
+        Invers = m.getEselonTereduksiInvers(Identity);
+        m.copyMatrix(Invers);
         return true; 
     }
 
