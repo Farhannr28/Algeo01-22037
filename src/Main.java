@@ -130,7 +130,7 @@ public class Main {
     public static void printSPLChoice() {
         System.out.print("""
                 >> Pilih metode
-                >> 1. Metode Eliminasi Gausss
+                >> 1. Metode Eliminasi Gauss
                 >> 2. Metode Eliminasi Gauss-Jordan
                 >> 3. Metode Matriks Balikan
                 >> 4. Metode Cramer
