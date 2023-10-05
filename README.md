@@ -18,7 +18,7 @@ Menghitung deteminan melalui metode OBE dan metode kofaktor, atau memberikan pes
 * **Mencari Matriks Invers** <br>
 Melalui metode eliminasi gauss ataupun adjoin, atau memberikan pesan apabila tidak ada
 * **Menyelesaikan persoalan interpolasi polinom** <br>
-memanfaatkan operasi baris elementer (OBE)
+Memanfaatkan operasi baris elementer (OBE)
 * **Menyelesaikan regresi linear berganda** <br>
 Mencari fungsi regresi linear dengan peubah banyak, melalui metode eliminasi gauss
 * **menyelesaikan Interpolasi bikubik** <br>
