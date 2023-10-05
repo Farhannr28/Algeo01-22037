@@ -11,7 +11,7 @@ public class Regresi {
         int n, m;
         System.out.print(">> Masukkan banyak sampel regresi (m): ");
         m = input.nextInt();
-        System.out.print(">> Masukkan banyak peubah regresi (n):: ");
+        System.out.print(">> Masukkan banyak peubah regresi (n): ");
         n = input.nextInt();
         Matrix read = new Matrix(m, n);
         System.out.print(">> Masukkan isi matrix regresi (n x m): ");
@@ -110,7 +110,7 @@ public class Regresi {
     }
 
     public static double yRegresi(Matrix Xk, Matrix vektor) {
-        // Mengembailkan hasil dari f(Xk), menggunakan matrix Xk berukuran 1x(N+1) dan
+        // Mengembalikan hasil dari f(Xk), menggunakan matrix Xk berukuran 1x(N+1) dan
         // vektor regresi berukuran (N+1)x1
         Matrix M = Matrix.multiplyMatrix(Xk, vektor);
         return M.Mat[0][0];
