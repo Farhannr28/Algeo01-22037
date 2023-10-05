@@ -8,16 +8,6 @@ public class Main {
     static Scanner scan = new Scanner(System.in); // string
 
     public static void startingLoading() throws InterruptedException, IOException {
-        String bar10 = "█▒▒▒▒▒▒▒▒▒ 10%";
-        String bar20 = "██▒▒▒▒▒▒▒▒ 20%";
-        String bar30 = "███▒▒▒▒▒▒▒ 30%";
-        String bar40 = "████▒▒▒▒▒▒ 40%";
-        String bar50 = "█████▒▒▒▒▒ 50%";
-        String bar60 = "██████▒▒▒▒ 60%";
-        String bar70 = "███████▒▒▒ 70%";
-        String bar80 = "████████▒▒ 80%";
-        String bar90 = "█████████▒ 90%";
-        String bar100 = "██████████ 100%";
         clearScreen();
         System.out.print("""
                 Initialization begin...
