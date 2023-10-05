@@ -1,0 +1,1 @@
+Kaidah cramer gagal karena determinan matrix 0

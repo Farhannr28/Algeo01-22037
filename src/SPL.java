@@ -264,14 +264,14 @@ public class SPL {
             b.Mat[i][0] = m.Mat[i][m.getCol() - 1];
         }
         if (isHasilHomogen(b)) {
-            if (Matrix.InversWithCofactor(a)) {
+            if (Matrix.InversWithGaussJordan(a)) {
                 for (int i = 0; i < m.getRow(); i++) {
                     ans.Mat[i][0] = 0;
                 }
             }
             // else tidak dapat menggunakan balikan
         } else {
-            if (Matrix.InversWithCofactor(a)) {
+            if (Matrix.InversWithGaussJordan(a)) {
                 ans = Matrix.multiplyMatrix(a, b);
             }
             // else tidak dapat menggunakan balikan

@@ -11,7 +11,7 @@ import javax.imageio.ImageIO;
 
 public class ImageInterpolation {
 
-    public static void main(String[] args) throws IOException {
+    public static void mainImageInterpolation(String[] args) throws IOException {
         // Declare
         Matrix X = new Matrix(16, 16);
         Matrix D = new Matrix(16, 16);

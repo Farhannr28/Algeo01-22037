@@ -1,0 +1,1 @@
+Kaidah cramer gagal karena matrix tidak persegi (n x n)
