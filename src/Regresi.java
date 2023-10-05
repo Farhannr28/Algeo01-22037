@@ -14,7 +14,7 @@ public class Regresi {
         System.out.print(">> Masukkan banyak peubah regresi (n): ");
         n = input.nextInt();
         Matrix read = new Matrix(m, n);
-        System.out.print(">> Masukkan isi matrix regresi (n x m): ");
+        System.out.println(">> Masukkan isi matrix regresi (n x m): ");
         read.readMatrix();
         Matrix augment = new Matrix(m, n + 2);
         if (m != 1) {
@@ -173,7 +173,7 @@ public class Regresi {
         return ans;
     }
 
-    public static void main(String[] args) {
+    public static void mainRegresi(String[] args) {
         String ans;
         IO f = new IO("");
         Matrix augmented = new Matrix(0, 0);

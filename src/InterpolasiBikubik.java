@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class InterpolasiBikubik {
     
-    public static void main(String[] args) {
+    public static void mainInterpolasiBikubik(String[] args) {
         // Variable declaration
         String fileName = IO.readfileName();
         IO f = new IO(fileName);

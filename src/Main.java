@@ -326,8 +326,8 @@ public class Main {
                                 res[0] = "Determinan tidak terdefinisi karena matrix bukan persegi (n x n)";
                             } else {
                                 res = new String[1];
-                                res[0] = String.format("%.5f", Matrix.determinantWithCofactor(m));
-                                // res[0] = Double.toString(Matrix.determinantWithCofactor(m));
+                                // res[0] = String.format("%.5f", Matrix.determinantWithCofactor(m));
+                                res[0] = Double.toString(Matrix.determinantWithCofactor(m));
                             }
                         } else {
                             if (m.getRow() != m.getCol()) {
@@ -335,8 +335,8 @@ public class Main {
                                 res[0] = "Determinan tidak terdefinisi karena matrix bukan persegi (n x n)";
                             } else {
                                 res = new String[1];
-                                res[0] = String.format("%.5f", Matrix.determinantWithOBE(m));
-                                // res[0] = Double.toString(Matrix.determinantWithOBE(m));
+                                // res[0] = String.format("%.5f", Matrix.determinantWithOBE(m));
+                                res[0] = Double.toString(Matrix.determinantWithOBE(m));
                             }
                         }
                         for (int i = 0; i < res.length; i++) {
@@ -445,28 +445,28 @@ public class Main {
                 case 4 -> {
                     clearScreen();
                     printOpening();
-                    Interpolasi.main(args);
+                    Interpolasi.mainInterpolasi(args);
                     pressEnterToContinue();
                     break;
                 }
                 case 5 -> {
                     clearScreen();
                     printOpening();
-                    InterpolasiBikubik.main(args);
+                    InterpolasiBikubik.mainInterpolasiBikubik(args);
                     pressEnterToContinue();
                     break;
                 }
                 case 6 -> {
                     clearScreen();
                     printOpening();
-                    Regresi.main(args);
+                    Regresi.mainRegresi(args);
                     pressEnterToContinue();
                     break;
                 }
                 case 7 -> {
                     clearScreen();
                     printOpening();
-                    ImageInterpolation.main(args);
+                    ImageInterpolation.mainImageInterpolation(args);
                     pressEnterToContinue();
                     break;
                 }

@@ -114,7 +114,7 @@ public class Interpolasi {
         return result;
     }
 
-    public static void main(String[] args) {
+    public static void mainInterpolasi(String[] args) {
 
         IO f = new IO("");
         System.out.println(">> Pilih tipe masukan");
