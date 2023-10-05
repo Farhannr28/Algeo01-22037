@@ -180,7 +180,7 @@ public class ImageInterpolation {
         try {
             System.out.print(">> Masukkan nama file keluaran: ");
             String outputFileName = IO.scan.nextLine();
-            File outputImg = new File("test/" + outputFileName);
+            File outputImg = new File("test/output/" + outputFileName);
             ImageIO.write(newImage, "png", outputImg);
         } catch (Exception e) {
             // TODO: handle exception

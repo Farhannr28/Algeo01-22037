@@ -5,13 +5,15 @@ public class SPL {
         Matrix res, coef;
         res = new Matrix(m.getRow(), 1);
         coef = Matrix.getCoefficient(m);
-        double coefDet = Matrix.determinantWithCofactor(coef);
+        // double coefDet = Matrix.determinantWithCofactor(coef);
+        double coefDet = Matrix.determinantWithOBE(coef);
         for (int i = 0; i < m.getCol() - 1; i++) {
             coef = Matrix.getCoefficient(m);
             for (int j = 0; j < m.getRow(); j++) {
                 coef.setElmt(j, i, m.getElmt(j, m.getCol() - 1));
             }
-            res.setElmt(i, 0, Matrix.determinantWithCofactor(coef) / coefDet);
+            // res.setElmt(i, 0, Matrix.determinantWithCofactor(coef) / coefDet);
+            res.setElmt(i, 0, Matrix.determinantWithOBE(coef) / coefDet);
         }
         res.negatedZero();
         return res;

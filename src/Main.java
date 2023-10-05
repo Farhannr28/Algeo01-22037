@@ -81,7 +81,8 @@ public class Main {
         clearScreen();
     }
 
-    public static String opening = """
+    public static void printOpening() {
+        String opening = """
 
             =======================================================================================================================================
 
@@ -101,8 +102,6 @@ public class Main {
             =======================================================================================================================================
 
                         """;
-
-    public static void printOpening() {
         System.out.print(opening);
     }
 

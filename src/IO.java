@@ -118,28 +118,12 @@ public class IO {
         return res;
     }
 
-    // Write
-    // public void writeBicubicSpline(String res) {
-    //     try {
-    //         System.out.print(">> Masukkan nama file keluaran: ");
-    //         String namaFile = scan.nextLine();
-    //         namaFile = "test/" + namaFile;
-    //         File file = new File(namaFile);
-    //         file.createNewFile();
-    //         FileWriter write = new FileWriter(namaFile);
-    //         write.write(res);
-    //         write.close();
-    //     } catch (Exception e) {
-    //         System.out.println("error");
-    //         // TODO: handle exception
-    //     }
-    // }
 
     public void writeStringToFile(String[] res) {
         try {
             System.out.print(">> Masukkan nama file keluaran: ");
             String namaFile = scan.nextLine();
-            namaFile = "test/" + namaFile;
+            namaFile = "test/output/" + namaFile;
             File file = new File(namaFile);
             file.createNewFile();
             FileWriter write = new FileWriter(namaFile);

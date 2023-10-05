@@ -1,6 +1,0 @@
-X1 = t1, dengan t1 bilangan Real.
-X2 = 1.0 - t6 
-X3 = t3, dengan t3 bilangan Real.
-X4 = -2.0 - t6 
-X5 = 1.0 + t6 
-X6 = t6, dengan t6 bilangan Real.
