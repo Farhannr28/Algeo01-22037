@@ -1,0 +1,5 @@
+X1 = 3.0 + t5 
+X2 = 2.0 t5 
+X3 = t3, dengan t3 bilangan Real.
+X4 = -1.0 + t5 
+X5 = t5, dengan t5 bilangan Real.
